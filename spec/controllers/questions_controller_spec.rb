@@ -106,8 +106,8 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it "render edit view" do
-          patch :update, id: question, question: {body: "12345", title: nil}
-          expect(response).to render_template :edit
+        patch :update, id: question, question: {body: "12345", title: nil}
+        expect(response).to render_template :edit
       end
     end
   end
