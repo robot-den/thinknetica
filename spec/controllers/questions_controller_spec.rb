@@ -43,23 +43,27 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid attributes' do
+      let(:create_question) { post :create, question: attributes_for(:question) }
+
       it "save new question in database" do
-        expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
+        expect { create_question }.to change(Question, :count).by(1)
       end
 
       it "redirect to show view" do
-        post :create, question: attributes_for(:question)
+        create_question
         expect(response).to redirect_to question_path(assigns(:question))
       end
     end
 
     context 'with invalid attributes' do
+      let(:create_invalid_question) { post :create, question: attributes_for(:invalid_question) }
+
       it "does not save question in database" do
-        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+        expect { create_invalid_question }.to_not change(Question, :count)
       end
 
       it "redirect to edit view" do
-        post :create, question: attributes_for(:invalid_question)
+        create_invalid_question
         expect(response).to render_template :new
       end
     end
@@ -79,8 +83,10 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'PATCH #update' do
     context 'with valid attributes' do
+      let(:update_question) { patch :update, id: question, question: attributes_for(:question) }
+
       it "assign requested question to @question" do
-        patch :update, id: question, question: attributes_for(:question)
+        update_question
         expect(assigns(:question)).to eq question
       end
 
@@ -92,7 +98,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it "redirect to show view" do
-        patch :update, id: question, question: attributes_for(:question)
+        update_question
         expect(response).to redirect_to question
       end
     end

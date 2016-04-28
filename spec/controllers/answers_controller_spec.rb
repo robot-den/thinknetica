@@ -24,7 +24,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { create_answer }.to change(question.answers, :count).by(1)
       end
 
-      it "redirect to new view" do
+      it "redirect to question" do
         create_answer
         expect(response).to redirect_to question_path(question)
       end
@@ -58,7 +58,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
     context 'with valid attributes' do
-      it "assign requested question to @question" do
+      it "assign requested answer to @answer" do
         patch :update, id: answer, answer: attributes_for(:answer)
         expect(assigns(:answer)).to eq answer
       end
@@ -69,13 +69,13 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq "12345678910"
       end
 
-      it "redirect to answers question" do
+      it "redirect to question show view" do
         patch :update, id: answer, answer: attributes_for(:answer)
         expect(response).to redirect_to question_url(answer.question_id)
       end
 
       context 'with invalid attributes' do
-        it "does not change question attributes" do
+        it "does not change answer attributes" do
           patch :update, id: answer, answer: {body: nil}
           answer.reload
           expect(answer.body).to eq "MyText123456789"
