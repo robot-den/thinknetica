@@ -9,13 +9,9 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     if @answer.save
-      respond_to do |format|
-        format.html { redirect_to @question }
-      end
+      redirect_to @question
     else
-      respond_to do |format|
-        format.html { render :new }
-      end
+      render :new
     end
   end
 
@@ -23,22 +19,16 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if @answer.update_attributes(answer_params)
-      respond_to do |format|
-        format.html { redirect_to question_url(@answer.question_id) }
-      end
+    if @answer.update(answer_params)
+      redirect_to question_url(@answer.question_id)
     else
-      respond_to do |format|
-        format.html { render :edit }
-      end
+      render :edit
     end
   end
 
   def destroy
     @answer.destroy
-    respond_to do |format|
-      format.html { redirect_to @question }
-    end
+    redirect_to @question
   end
 
   private

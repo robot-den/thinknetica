@@ -15,13 +15,9 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(questions_params)
     if @question.save
-      respond_to do |format|
-        format.html { redirect_to @question }
-      end
+      redirect_to @question
     else
-      respond_to do |format|
-        format.html { render :new }
-      end
+      render :new
     end
   end
 
@@ -29,14 +25,10 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.update_attributes(questions_params)
-      respond_to do |format|
-        format.html { redirect_to @question }
-      end
+    if @question.update(questions_params)
+      redirect_to @question
     else
-      respond_to do |format|
-        format.html { render :edit }
-      end
+      render :edit
     end
   end
 
