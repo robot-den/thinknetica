@@ -6,9 +6,10 @@ feature 'User can view question with its answers', %q{
   I want to read question with its answers
 } do
   given(:question) { create(:question) }
+  given(:user) { create(:user) }
 
   scenario 'user view question with its answers' do
-    question.answers << Answer.new(body: 'It is my answer')
+    question.answers << Answer.new(body: 'It is my answer', user_id: user.id)
 
     visit question_path(question)
 
