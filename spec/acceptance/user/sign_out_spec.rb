@@ -5,13 +5,11 @@ feature 'User sign out', %q{
   As an autheticated user
   I want to sign out
 } do
+  given(:user) { create(:user) }
+  
   scenario 'authenticated user try to sign out' do
-    User.create!(email: 'user@test.ru', password: '12345678', password_confirmation: '12345678')
+    sign_in(user)
 
-    visit new_user_session_path
-    fill_in 'Email', with: 'user@test.ru'
-    fill_in 'Password', with: '12345678'
-    click_on 'Log in'
     click_on 'Log out'
 
     expect(page).to have_content 'Signed out successfully'

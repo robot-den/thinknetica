@@ -2,18 +2,14 @@ require 'rails_helper'
 
 feature 'User can create answers', %q{
   In order to help community
-  As an user
+  As an authenticate user
   I want to create answers
 } do
   given(:question) { create(:question) }
+  given(:user) { create(:user) }
 
   scenario 'authenticate user creates answer' do
-    User.create!(email: 'user@test.ru', password: '12345678', password_confirmation: '12345678')
-
-    visit new_user_session_path
-    fill_in 'Email', with: 'user@test.ru'
-    fill_in 'Password', with: '12345678'
-    click_on 'Log in'
+    sign_in(user)
 
     visit question_path(question)
     fill_in 'Answer', with: 'That is my answer'

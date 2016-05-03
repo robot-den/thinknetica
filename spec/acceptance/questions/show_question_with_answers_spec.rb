@@ -8,14 +8,13 @@ feature 'User can view question with its answers', %q{
   given(:question) { create(:question) }
 
   scenario 'user view question with its answers' do
-    question
-    question.answers << Answer.new(body: 'MyText123456789')
+    question.answers << Answer.new(body: 'It is my answer')
 
     visit question_path(question)
 
-    expect(page).to have_content 'MyTitle123456789'
-    expect(page).to have_content 'MyBody123456789'
-    expect(page).to have_content 'MyText123456789'
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
+    expect(page).to have_content 'It is my answer'
     expect(current_path).to eq question_path(question)
   end
 end
