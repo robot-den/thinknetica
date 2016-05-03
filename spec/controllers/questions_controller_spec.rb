@@ -24,6 +24,10 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to eq question
     end
 
+    it 'assigns new answer to @answer' do
+      expect(assigns(:answer)).to be_a_new(Answer)
+    end
+
     it 'render show view' do
       expect(response).to render_template :show
     end
@@ -49,9 +53,10 @@ RSpec.describe QuestionsController, type: :controller do
         expect { create_question }.to change(Question, :count).by(1)
       end
 
-      it "redirect to show view" do
+      it "redirect to show view with notice" do
         create_question
         expect(response).to redirect_to question_path(assigns(:question))
+        expect(flash[:notice]).to be_present
       end
     end
 
@@ -107,8 +112,8 @@ RSpec.describe QuestionsController, type: :controller do
       it "does not change question attributes" do
         patch :update, id: question, question: {body: "12345", title: nil}
         question.reload
-        expect(question.title).to eq "MyString123456789"
-        expect(question.body).to eq "MyString123456789"
+        expect(question.title).to eq "MyTitle123456789"
+        expect(question.body).to eq "MyBody123456789"
       end
 
       it "render edit view" do

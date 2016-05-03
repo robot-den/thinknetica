@@ -6,6 +6,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @answer = Answer.new
   end
 
   def new
@@ -15,6 +16,7 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(questions_params)
     if @question.save
+      flash[:notice] = "Your question created successfully"
       redirect_to @question
     else
       render :new
