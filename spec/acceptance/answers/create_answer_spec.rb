@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'User can create answers', %q{
   In order to help community
   As an user
-  I want to be able to create answers
+  I want to create answers
 } do
   given(:question) { create(:question) }
 
@@ -13,6 +13,7 @@ feature 'User can create answers', %q{
     fill_in 'Answer', with: 'That is my answer'
     click_on 'Reply'
 
+    expect(question.answers.count).to eq 1
     expect(page).to have_content 'That is my answer'
     expect(current_path).to eq question_path(question)
   end
