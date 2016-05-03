@@ -2,12 +2,12 @@ require 'rails_helper'
 
 feature 'User can create question', %q{
   In order to get answer from community
-  As an authenticate user
+  As an authenticated user
   I want to create question
 } do
   given(:user) { create(:user) }
 
-  scenario 'authenticate user creates question' do
+  scenario 'authenticated user creates question' do
     sign_in(user)
 
     click_on 'Ask question'
@@ -25,7 +25,7 @@ feature 'User can create question', %q{
     expect(current_path).to eq question_path(Question.find_by_title('My test question'))
   end
 
-  scenario 'non-authenticate user creates question' do
+  scenario 'non-authenticated user creates question' do
     visit new_question_path
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'

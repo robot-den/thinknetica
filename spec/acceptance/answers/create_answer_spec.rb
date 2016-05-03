@@ -2,13 +2,13 @@ require 'rails_helper'
 
 feature 'User can create answers', %q{
   In order to help community
-  As an authenticate user
+  As an authenticated user
   I want to create answers
 } do
   given(:question) { create(:question) }
   given(:user) { create(:user) }
 
-  scenario 'authenticate user creates answer' do
+  scenario 'authenticated user creates answer' do
     sign_in(user)
 
     visit question_path(question)
@@ -20,7 +20,7 @@ feature 'User can create answers', %q{
     expect(current_path).to eq question_path(question)
   end
 
-  scenario 'non-authenticate user creates answer' do
+  scenario 'non-authenticated user creates answer' do
     visit question_path(question)
     fill_in 'Answer', with: 'That is my answer'
     click_on 'Reply'
