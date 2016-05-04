@@ -19,24 +19,19 @@ feature 'User can delete his question', %q{
     click_on 'Delete Question'
 
     expect(page).to have_content 'Your question deleted successfully'
-    expect(current_path).to eq questions_path
   end
 
   scenario "authenticated user deletes another's question" do
-    question
     sign_in(user)
 
-    # Юзер вообще смог бы отправить такой запрос? Ведь у него нет подобной ссылки
-    page.driver.submit :delete, "/questions/#{question.id}", {}
+    visit question_path(question)
 
-    expect(page).to have_content "You can't delete that question"
-    expect(current_path).to eq question_path(question)
+    expect(page).to_not have_link 'Delete Question'
   end
 
   scenario 'non-authenticated user deletes question' do
-    page.driver.submit :delete, "/questions/#{question.id}", {}
+    visit question_path(question)
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
-    expect(current_path).to eq new_user_session_path
+    expect(page).to_not have_link 'Delete Question'
   end
 end

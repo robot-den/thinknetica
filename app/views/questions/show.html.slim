@@ -8,7 +8,8 @@ hr
   - if user_signed_in? && current_user.id == answer.user_id
     = link_to 'Delete my answer', answer_path(answer), method: :delete
 hr
-= form_for [@question, @answer] do |f|
-  = f.label :body, 'Answer'
-  = f.text_area :body
-  = f.submit 'Reply'
+- if user_signed_in?
+  = form_for [@question, @answer] do |f|
+    = f.label :body, 'Answer'
+    = f.text_area :body
+    = f.submit 'Reply'
