@@ -1,13 +1,14 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!
   before_action :get_answer, only: [:edit, :update, :destroy]
-  before_action :get_question, only: [:create, :destroy]
 
   def new
     @answer = Answer.new
   end
 
   def create
-    @answer = @question.answers.new(answer_params)
+    @question = Question.find(params[:question_id])
+    @answer = @question.answers.new(answer_params.merge({user_id: current_user.id}))
     if @answer.save
       redirect_to @question
     else
@@ -27,15 +28,17 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.destroy
-    redirect_to @question
+    question = @answer.question_id
+    if current_user.id == @answer.user_id
+      @answer.destroy
+      flash[:notice] = "Your answer deleted successfully"
+    else
+      flash[:notice] = "You can't delete that answer"
+    end
+    redirect_to question_path(question)
   end
 
   private
-
-  def get_question
-    @question = Question.find(params[:question_id])
-  end
 
   def get_answer
     @answer = Answer.find(params[:id])

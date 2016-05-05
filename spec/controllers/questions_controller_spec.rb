@@ -24,12 +24,17 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to eq question
     end
 
+    it 'assigns new answer to @answer' do
+      expect(assigns(:answer)).to be_a_new(Answer)
+    end
+
     it 'render show view' do
       expect(response).to render_template :show
     end
   end
 
   describe 'GET #new' do
+    sign_in_user
     before { get :new }
 
     it 'assigns new question to @question' do
@@ -42,6 +47,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
+    sign_in_user
     context 'with valid attributes' do
       let(:create_question) { post :create, question: attributes_for(:question) }
 
@@ -49,9 +55,10 @@ RSpec.describe QuestionsController, type: :controller do
         expect { create_question }.to change(Question, :count).by(1)
       end
 
-      it "redirect to show view" do
+      it "redirect to show view with notice" do
         create_question
         expect(response).to redirect_to question_path(assigns(:question))
+        expect(flash[:notice]).to be_present
       end
     end
 
@@ -70,6 +77,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
+    sign_in_user
     before { get :edit, id: question }
 
     it 'assigns requested question to @question' do
@@ -82,6 +90,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    sign_in_user
     context 'with valid attributes' do
       let(:update_question) { patch :update, id: question, question: attributes_for(:question) }
 
@@ -107,8 +116,8 @@ RSpec.describe QuestionsController, type: :controller do
       it "does not change question attributes" do
         patch :update, id: question, question: {body: "12345", title: nil}
         question.reload
-        expect(question.title).to eq "MyString123456789"
-        expect(question.body).to eq "MyString123456789"
+        expect(question.title).to eq "MyTitle123456789"
+        expect(question.body).to eq "MyBody123456789"
       end
 
       it "render edit view" do
@@ -119,14 +128,34 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    it "delete question from database" do
-      question
-      expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+    sign_in_user
+
+    context "by the author of the question" do
+      let(:question) { Question.create!(title: 'ExampleTitle', body: 'ExampleBody', user_id: @user.id) }
+
+      it "deletes question from database" do
+        question
+        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+      end
+
+      it "redirect to index view with notice" do
+        delete :destroy, id: question
+        expect(response).to redirect_to questions_url
+        expect(flash[:notice]).to be_present
+      end
     end
 
-    it "redirect to index view" do
-      delete :destroy, id: question
-      expect(response).to redirect_to questions_url
+    context "by not the author of the question" do
+      it "doesnt deletes question from database" do
+        question
+        expect { delete :destroy, id: question }.to_not change(Question, :count)
+      end
+
+      it "redirects to show view with notice" do
+        delete :destroy, id: question
+        expect(response).to redirect_to question_path(question)
+        expect(flash[:notice]).to be_present
+      end
     end
   end
 end

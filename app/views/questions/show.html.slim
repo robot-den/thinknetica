@@ -1,0 +1,15 @@
+= @question.title
+= @question.body
+- if user_signed_in? && current_user.id == @question.user_id
+  = link_to 'Delete Question', question_path(@question), method: :delete
+hr
+- @question.answers.each do |answer|
+  = answer.body
+  - if user_signed_in? && current_user.id == answer.user_id
+    = link_to 'Delete my answer', answer_path(answer), method: :delete
+hr
+- if user_signed_in?
+  = form_for [@question, @answer] do |f|
+    = f.label :body, 'Answer'
+    = f.text_area :body
+    = f.submit 'Reply'
