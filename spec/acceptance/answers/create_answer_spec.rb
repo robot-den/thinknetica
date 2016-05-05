@@ -18,7 +18,7 @@ feature 'User can create answers', %q{
     expect(page).to have_content 'That is my answer'
   end
 
-  scenario 'authenticated user creates answer via AJAX' do
+  scenario 'authenticated user creates answer via AJAX', js: true do
     sign_in(user)
     visit question_path(question)
 
