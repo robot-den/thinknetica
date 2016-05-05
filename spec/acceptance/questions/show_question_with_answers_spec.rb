@@ -6,10 +6,10 @@ feature 'User can view question with its answers', %q{
   I want to read question with its answers
 } do
   given(:question) { create(:question) }
-  given(:answer) { create(:answer) }
+  given(:answer) { create(:answer, question: question) }
 
   scenario 'user view question with its answers' do
-    question.answers << answer
+    answer
 
     visit question_path(question)
 

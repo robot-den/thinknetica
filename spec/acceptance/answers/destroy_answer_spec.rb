@@ -12,9 +12,7 @@ feature 'User can delete his answer', %q{
   scenario 'authenticated user deletes his answer' do
     sign_in(user)
 
-    # Пока не получается заставить фабрику принимать параметры
-    answer.user_id = user.id
-    question.answers << answer
+    create(:answer, user: user, question: question)
 
     visit question_path(question)
     click_on 'Delete my answer'
