@@ -1,0 +1,3 @@
+= answer.body
+- if user_signed_in? && current_user.id == answer.user_id
+  = link_to 'Delete my answer', answer_path(answer), method: :delete

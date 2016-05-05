@@ -1,1 +1,1 @@
-$('.answers').html("<%= j render 'questions/answers' %>")
+$('.answers').append("<%= j render partial: 'answer', locals: {answer: @answer} %>")

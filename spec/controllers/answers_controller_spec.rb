@@ -67,7 +67,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it "render create.js view" do
         create_invalid_answer
-        expect(response).to render_template :create
+        expect(response.body).to be_blank
       end
     end
   end
