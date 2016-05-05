@@ -10,12 +10,24 @@ feature 'User can create answers', %q{
 
   scenario 'authenticated user creates answer' do
     sign_in(user)
-
     visit question_path(question)
+
     fill_in 'Answer', with: 'That is my answer'
     click_on 'Reply'
 
     expect(page).to have_content 'That is my answer'
+  end
+
+  scenario 'authenticated user creates answer via AJAX' do
+    sign_in(user)
+    visit question_path(question)
+
+    fill_in 'Answer', with: 'That is my answer'
+    click_on 'Reply'
+
+    within '.answers' do
+      expect(page).to have_content 'That is my answer'
+    end
   end
 
   scenario 'non-authenticated user creates answer' do

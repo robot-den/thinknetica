@@ -69,7 +69,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect { create_invalid_question }.to_not change(Question, :count)
       end
 
-      it "redirect to edit view" do
+      it "render edit view" do
         create_invalid_question
         expect(response).to render_template :new
       end
