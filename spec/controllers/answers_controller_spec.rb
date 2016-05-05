@@ -32,6 +32,19 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
+    context 'with valid attributes via AJAX' do
+      let(:create_answer) {  post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
+
+      it "save new answer for question in database" do
+        expect { create_answer }.to change(question.answers, :count).by(1)
+      end
+
+      it "render create.js view" do
+        create_answer
+        expect(response).to render_template :create
+      end
+    end
+
     context 'with invalid attributes' do
       let(:create_invalid_answer) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer) }
 
@@ -41,7 +54,20 @@ RSpec.describe AnswersController, type: :controller do
 
       it "redirect to new view" do
         create_invalid_answer
-        expect(response).to render_template :new
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+
+    context 'with invalid attributes via AJAX' do
+      let(:create_invalid_answer) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }
+
+      it "does not save answer for question in database" do
+        expect { create_invalid_answer }.to_not change(Answer, :count)
+      end
+
+      it "render create.js view" do
+        create_invalid_answer
+        expect(response).to render_template :create
       end
     end
   end

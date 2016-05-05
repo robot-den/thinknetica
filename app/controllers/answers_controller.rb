@@ -9,13 +9,10 @@ class AnswersController < ApplicationController
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge({user_id: current_user.id}))
-    if @answer.save
-      respond_to do |format|
-        format.html { redirect_to @question }
-        format.js
-      end
-    else
-      render :new
+    @answer.save
+    respond_to do |format|
+      format.html { redirect_to @question }
+      format.js
     end
   end
 

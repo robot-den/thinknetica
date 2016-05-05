@@ -15,7 +15,7 @@ feature 'User can create answers', %q{
     fill_in 'Answer', with: 'That is my answer'
     click_on 'Reply'
 
-    expect(page).to have_content 'That is my answer'
+    expect(page).to have_content 'That is my answer'  
   end
 
   scenario 'authenticated user creates answer via AJAX', js: true do
