@@ -3,6 +3,7 @@
 - if user_signed_in? && current_user.id == @question.user_id
   = link_to 'Delete Question', question_path(@question), method: :delete
 hr
+.answers-errors
 .answers
   = render @question.answers
 hr
