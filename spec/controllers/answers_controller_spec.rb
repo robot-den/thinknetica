@@ -19,18 +19,6 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     sign_in_user
-    # context 'with valid attributes' do
-    #   let(:create_answer) {  post :create, question_id: question.id, answer: attributes_for(:answer) }
-    #
-    #   it "save new answer for question in database" do
-    #     expect { create_answer }.to change(question.answers, :count).by(1)
-    #   end
-    #
-    #   it "redirect to question" do
-    #     create_answer
-    #     expect(response).to redirect_to question_path(question)
-    #   end
-    # end
 
     context 'with valid attributes via AJAX' do
       let(:create_answer) {  post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
@@ -44,19 +32,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :create
       end
     end
-
-    # context 'with invalid attributes' do
-    #   let(:create_invalid_answer) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer) }
-    #
-    #   it "does not save answer for question in database" do
-    #     expect { create_invalid_answer }.to_not change(Answer, :count)
-    #   end
-    #
-    #   it "redirect to new view" do
-    #     create_invalid_answer
-    #     expect(response).to redirect_to question_path(question)
-    #   end
-    # end
 
     context 'with invalid attributes via AJAX' do
       let(:create_invalid_answer) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }
@@ -72,49 +47,55 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
-    sign_in_user
-    before { get :edit, id: answer}
-
-    it 'assigns requested answer to @answer' do
-      expect(assigns(:answer)).to eq answer
-    end
-
-    it 'render edit view' do
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'PATCH #update' do
+    let(:valid_update) { patch :update, id: answer, answer: {body: "12345678910"}, format: :js }
     sign_in_user
-    context 'with valid attributes' do
+
+    context 'by not the author of answer' do
+      it "does not change answer attributes" do
+        valid_update
+        answer.reload
+        expect(answer.body).to_not eq '12345678910'
+      end
+
+      it "render update.js view" do
+        valid_update
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with valid attributes by author' do
+      let(:answer) { create(:answer, user_id: @user.id) }
+
       it "assign requested answer to @answer" do
-        patch :update, id: answer, answer: attributes_for(:answer)
+        valid_update
         expect(assigns(:answer)).to eq answer
       end
 
       it "change answer attributes" do
-        patch :update, id: answer, answer: {body: "12345678910"}
+        valid_update
         answer.reload
         expect(answer.body).to eq "12345678910"
       end
 
-      it "redirect to question show view" do
-        patch :update, id: answer, answer: attributes_for(:answer)
-        expect(response).to redirect_to question_url(answer.question_id)
+      it "render update.js view" do
+        valid_update
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with invalid attributes by author' do
+      let(:answer) { create(:answer, user_id: @user.id) }
+
+      it "does not change answer attributes" do
+        patch :update, id: answer, answer: {body: nil}, format: :js
+        answer.reload
+        expect(answer.body).to_not eq nil
       end
 
-      context 'with invalid attributes' do
-        it "does not change answer attributes" do
-          patch :update, id: answer, answer: {body: nil}
-          answer.reload
-          expect(answer.body).to eq "MyText123456789"
-        end
-
-        it "render edit view" do
-          patch :update, id: answer, answer: {body: nil}
-          expect(response).to render_template :edit
-        end
+      it "render update.js view" do
+        patch :update, id: answer, answer: {body: nil}, format: :js
+        expect(response).to render_template :update
       end
     end
   end

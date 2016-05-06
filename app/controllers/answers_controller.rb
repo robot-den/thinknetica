@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :get_answer, only: [:edit, :update, :destroy]
+  before_action :get_answer, only: [:update, :destroy]
 
   def new
     @answer = Answer.new
@@ -21,15 +21,8 @@ class AnswersController < ApplicationController
     # end
   end
 
-  def edit
-  end
-
   def update
-    if @answer.update(answer_params)
-      redirect_to question_url(@answer.question_id)
-    else
-      render :edit
-    end
+    @answer.update(answer_params) if current_user.id == @answer.user_id
   end
 
   def destroy
