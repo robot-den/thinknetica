@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'User can delete his answer', %q{
   In order to remove unrelevant answer
