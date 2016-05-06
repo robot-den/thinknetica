@@ -9,11 +9,16 @@ class AnswersController < ApplicationController
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge({user_id: current_user.id}))
-    if @answer.save
-      redirect_to @question
-    else
-      render :new
-    end
+    @answer.save
+    # respond_to do |format|
+    #   if @answer.save
+    #     format.html { redirect_to @question }
+    #     format.js
+    #   else
+    #     format.html { redirect_to @question }
+    #     format.js { render :nothing => true }
+    #   end
+    # end
   end
 
   def edit

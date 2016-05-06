@@ -19,29 +19,55 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     sign_in_user
-    context 'with valid attributes' do
-      let(:create_answer) {  post :create, question_id: question.id, answer: attributes_for(:answer) }
+    # context 'with valid attributes' do
+    #   let(:create_answer) {  post :create, question_id: question.id, answer: attributes_for(:answer) }
+    #
+    #   it "save new answer for question in database" do
+    #     expect { create_answer }.to change(question.answers, :count).by(1)
+    #   end
+    #
+    #   it "redirect to question" do
+    #     create_answer
+    #     expect(response).to redirect_to question_path(question)
+    #   end
+    # end
+
+    context 'with valid attributes via AJAX' do
+      let(:create_answer) {  post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
 
       it "save new answer for question in database" do
         expect { create_answer }.to change(question.answers, :count).by(1)
       end
 
-      it "redirect to question" do
+      it "render create.js view" do
         create_answer
-        expect(response).to redirect_to question_path(question)
+        expect(response).to render_template :create
       end
     end
 
-    context 'with invalid attributes' do
-      let(:create_invalid_answer) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer) }
+    # context 'with invalid attributes' do
+    #   let(:create_invalid_answer) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer) }
+    #
+    #   it "does not save answer for question in database" do
+    #     expect { create_invalid_answer }.to_not change(Answer, :count)
+    #   end
+    #
+    #   it "redirect to new view" do
+    #     create_invalid_answer
+    #     expect(response).to redirect_to question_path(question)
+    #   end
+    # end
+
+    context 'with invalid attributes via AJAX' do
+      let(:create_invalid_answer) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }
 
       it "does not save answer for question in database" do
-        expect { create_invalid_answer }.to_not change(question.answers, :count)
+        expect { create_invalid_answer }.to_not change(Answer, :count)
       end
 
-      it "redirect to new view" do
+      it "render create.js view" do
         create_invalid_answer
-        expect(response).to render_template :new
+        expect(response).to render_template :create
       end
     end
   end
