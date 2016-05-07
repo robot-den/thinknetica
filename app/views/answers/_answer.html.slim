@@ -8,3 +8,6 @@ div id="answer-#{ answer.id }"
         = f.text_area :body
         = f.submit 'Save'
       = link_to 'Delete my answer', answer_path(answer), method: :delete, remote: true
+  - # FIXME N+1 query
+  - if user_signed_in? && answer.question.user_id == current_user.id
+    = link_to 'Mark as best'
