@@ -10,7 +10,7 @@ feature 'User can edit his question', %q{
 
   scenario 'authenticated user edit his question', js: true do
     sign_in(user)
-    create(:question, user: user)
+    question = create(:question, user: user)
     visit question_path(question)
 
     within '.question' do
