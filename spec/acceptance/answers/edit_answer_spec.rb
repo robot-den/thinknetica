@@ -16,13 +16,19 @@ feature 'User can edit his answer', %q{
 
     within '.answers' do
       click_on 'Edit answer'
-      fill_in 'Answer', with: 'Edited answer'
+      fill_in 'Answer', with: 'First edit answer'
       click_on 'Save'
-    end
 
-    within '.answers' do
+      expect(page).to have_content 'First edit answer'
       expect(page).to_not have_content answer.body
-      expect(page).to have_content 'Edited answer'
+      expect(page).to_not have_selector 'textarea'
+
+      click_on 'Edit answer'
+      fill_in 'Answer', with: 'Second edit answer'
+      click_on 'Save'
+
+      expect(page).to have_content 'Second edit answer'
+      expect(page).to_not have_content 'First edit answer'
       expect(page).to_not have_selector 'textarea'
     end
   end
