@@ -102,32 +102,31 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'DELETE #destroy' do
     sign_in_user
+    let(:destroy_answer) { delete :destroy, id: answer, format: :js }
 
     context 'by the author of the answer' do
       let(:answer) { Answer.create!(body: 'ExampleBody',question_id: question.id, user_id: @user.id) }
 
       it "delete answer from database" do
         answer
-        expect { delete :destroy, id: answer }.to change(Answer, :count).by(-1)
+        expect { destroy_answer }.to change(Answer, :count).by(-1)
       end
 
-      it "redirect to question show view with notice" do
-        delete :destroy, id: answer
-        expect(response).to redirect_to question_url(answer.question_id)
-        expect(flash[:notice]).to be_present
+      it "render update.js view" do
+        destroy_answer
+        expect(response).to render_template :destroy
       end
     end
 
     context "by not the author of the answer" do
       it "doesnt deletes answer from database" do
         answer
-        expect { delete :destroy, id: answer }.to_not change(Question, :count)
+        expect { destroy_answer }.to_not change(Question, :count)
       end
 
-      it "redirects to question show view with notice" do
-        delete :destroy, id: answer
-        expect(response).to redirect_to question_path(answer.question_id)
-        expect(flash[:notice]).to be_present
+      it "render update.js view" do
+        destroy_answer
+        expect(response).to render_template :destroy
       end
     end
   end

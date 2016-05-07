@@ -1,0 +1,5 @@
+<% if @answer.destroyed? %>
+  $( '<%= "#answer-#{ @answer.id }" %>' ).empty();
+<% else %>
+  console.log("you can't delete that answer")
+<% end %>

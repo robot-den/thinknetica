@@ -7,4 +7,4 @@ div id="answer-#{ answer.id }"
         = f.label :body, 'Answer'
         = f.text_area :body
         = f.submit 'Save'
-      = link_to 'Delete my answer', answer_path(answer), method: :delete
+      = link_to 'Delete my answer', answer_path(answer), method: :delete, remote: true
