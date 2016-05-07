@@ -77,39 +77,57 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    let(:valid_update) { patch :update, id: question, question: {title: "12345678910", body: "12345678910"}, format: :js }
     sign_in_user
-    context 'with valid attributes' do
-      let(:update_question) { patch :update, id: question, question: attributes_for(:question) }
+
+    context 'by not the author of question' do
+      it "does not change question attributes" do
+        valid_update
+        question.reload
+        expect(question.title).to_not eq '12345678910'
+        expect(question.body).to_not eq '12345678910'
+      end
+
+      it "render update.js view" do
+        valid_update
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with valid attributes by author' do
+      let(:question) { create(:question, user_id: @user.id) }
 
       it "assign requested question to @question" do
-        update_question
+        valid_update
         expect(assigns(:question)).to eq question
       end
 
       it "change question attributes" do
-        patch :update, id: question, question: {body: "12345678910", title: "12345678910"}
+        valid_update
         question.reload
         expect(question.title).to eq "12345678910"
         expect(question.body).to eq "12345678910"
       end
 
-      it "redirect to show view" do
-        update_question
-        expect(response).to redirect_to question
+      it "render update.js view" do
+        valid_update
+        expect(response).to render_template :update
       end
     end
 
-    context 'with invalid attributes' do
+    context 'with invalid attributes by author' do
+      let(:question) { create(:question, user_id: @user.id) }
+
       it "does not change question attributes" do
-        patch :update, id: question, question: {body: "12345", title: nil}
+        patch :update, id: question, question: {body: "12345", title: nil}, format: :js
         question.reload
         expect(question.title).to eq "MyTitle123456789"
         expect(question.body).to eq "MyBody123456789"
       end
 
-      it "render edit view" do
-        patch :update, id: question, question: {body: "12345", title: nil}
-        expect(response).to render_template :edit
+      it "render update.js view" do
+        patch :update, id: question, question: {body: "12345", title: nil}, format: :js
+        expect(response).to render_template :update
       end
     end
   end

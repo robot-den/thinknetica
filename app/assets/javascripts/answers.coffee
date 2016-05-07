@@ -7,4 +7,3 @@ $ ->
     answer_id = $(this).data('answerId');
     $(this).hide();
     $('#edit-answer-' + answer_id).show();
-  return

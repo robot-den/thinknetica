@@ -1,15 +1,6 @@
+.question-errors
 .question
-  = @question.title
-  = @question.body
-  - if user_signed_in? && current_user.id == @question.user_id
-    = link_to 'Edit question'
-    = link_to 'Delete Question', question_path(@question), method: :delete
-  = form_for @question, remote: true do |f|
-    = f.label :title, 'Edit title'
-    = f.text_field :title
-    = f.label :body, 'Edit body'
-    = f.text_area :body
-    = f.submit 'Save'
+  = render 'question'
 hr
 .answers-errors
 .answers

@@ -1,9 +1,11 @@
 <% if @answer.errors.present? %>
   <% @answer.errors.full_messages.each do |message| %>
-    $('.answers-errors').append("<%= j message %>")
+    $('.answers-errors').html("<%= j message %>")
   <% end %>
 <% else %>
-  $( '<%= "#answer-#{ @answer.id }" %>' ).replaceWith("<%= j render partial: 'answer', locals: {answer: @answer} %>")
+  $( '<%= "#answer-#{ @answer.id }" %>' ).replaceWith("<%= j render partial: 'answer', locals: {answer: @answer} %>");
+
+  $('.answers-errors').empty();
 
   $('.edit-answer-link').click(function(e) {
     e.preventDefault();
