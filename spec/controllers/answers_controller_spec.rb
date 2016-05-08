@@ -130,4 +130,49 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #set_as_best' do
+    sign_in_user
+    let(:answer) { create(:answer, question: question) }
+
+    context 'by the author of the question' do
+      let(:question) { create(:question, user_id: @user.id) }
+
+      it 'assigns questions answers to @answers' do
+        patch :set_as_best, id: answer.id, format: :js
+
+        expect(assigns(:answers)).to eq question.answers
+      end
+
+      it 'change "best" attribute of answer' do
+        patch :set_as_best, id: answer.id, format: :js
+        answer.reload
+
+        expect(answer.best?).to eq true
+      end
+
+      it 'render set_as_best.js view' do
+        patch :set_as_best, id: answer.id, format: :js
+
+        expect(response).to render_template :set_as_best
+      end
+    end
+
+    context "by not the author of the question" do
+      let(:question) { create(:question) }
+
+      it 'doesnt change best_answer attribute of question' do
+        patch :set_as_best, id: answer.id, format: :js
+        answer.reload
+
+        expect(answer.best?).to eq false
+      end
+
+      it 'render set_as_best.js view' do
+        patch :set_as_best, id: answer.id, format: :js
+
+        expect(response).to render_template :set_as_best
+      end
+    end
+  end
 end

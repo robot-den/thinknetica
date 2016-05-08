@@ -1,0 +1,6 @@
+<% if @answers.present? %>
+  $('.answers').html("<%= j render @answers %>");
+  console.log("ok");
+<% else %>
+  console.log("you can't set best answer");
+<% end %>

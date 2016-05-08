@@ -9,5 +9,7 @@ div id="answer-#{ answer.id }"
         = f.submit 'Save'
       = link_to 'Delete my answer', answer_path(answer), method: :delete, remote: true
   - # FIXME N+1 query
-  - if user_signed_in? && answer.question.user_id == current_user.id
-    = link_to 'Mark as best'
+  - if user_signed_in? && answer.question.user_id == current_user.id && !answer.best?
+      = link_to 'Mark as best', set_best_answer_path(answer), method: :patch, remote: true
+  - if answer.best?
+      | Best answer

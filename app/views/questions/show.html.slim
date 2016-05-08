@@ -4,7 +4,7 @@
 hr
 .answers-errors
 .answers
-  = render @question.answers
+  = render @answers
 hr
 - if user_signed_in?
   = form_for [@question, @answer], remote: true do |f|

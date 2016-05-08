@@ -10,7 +10,7 @@ feature 'User can choose the best answer', %q{
   given!(:answer_one) { create(:answer, question: question) }
   given!(:answer_two) { create(:answer, question: question) }
 
-  scenario 'authenticated user as author of question set various answers as best' do
+  scenario 'authenticated user as author of question set various answers as best', js: true do
     sign_in(user)
     visit question_path(question)
 
@@ -35,7 +35,7 @@ feature 'User can choose the best answer', %q{
 
   end
 
-  scenario "authenticated user set best answer for another's question" do
+  scenario "authenticated user set best answer for another's question", js: true do
     sign_in(user)
     question = create(:question)
     answer = create(:answer, question: question)
@@ -46,7 +46,7 @@ feature 'User can choose the best answer', %q{
     end
   end
 
-  scenario 'non-authenticated user set best answer' do
+  scenario 'non-authenticated user set best answer', js: true do
     question = create(:question)
     answer = create(:answer, question: question)
     visit question_path(question)

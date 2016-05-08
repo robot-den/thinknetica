@@ -3,6 +3,7 @@ FactoryGirl.define do
     body "MyText123456789"
     question
     user
+    best false
   end
 
   factory :invalid_answer, class: "Answer" do
