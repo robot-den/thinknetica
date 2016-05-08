@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
-  $('.edit-answer-link').click (e) ->
+  $('.answers').on 'click', '.edit-answer-link', (e) ->
     e.preventDefault();
     answer_id = $(this).data('answerId');
     $(this).hide();

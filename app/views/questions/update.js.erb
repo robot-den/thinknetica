@@ -4,12 +4,5 @@
   <% end %>
 <% else %>
   $( '.question' ).html("<%= j render 'question' %>");
-
   $('.question-errors').empty();
-
-  $('.edit-question-link').click(function(e) {
-    e.preventDefault();
-    $(this).hide();
-    $('.edit_question').show();
-  });
 <% end %>

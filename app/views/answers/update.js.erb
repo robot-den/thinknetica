@@ -4,13 +4,5 @@
   <% end %>
 <% else %>
   $( '<%= "#answer-#{ @answer.id }" %>' ).replaceWith("<%= j render partial: 'answer', locals: {answer: @answer} %>");
-
   $('.answers-errors').empty();
-
-  $('.edit-answer-link').click(function(e) {
-    e.preventDefault();
-    answer_id = $(this).data('answerId');
-    $(this).hide();
-    $('#edit-answer-' + answer_id).show();
-  });
 <% end %>
