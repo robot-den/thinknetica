@@ -22,4 +22,12 @@ RSpec.describe Answer, type: :model do
       expect(answer2.best?).to eq false
     end
   end
+
+  describe '#only_one_best_answer_for_question validation method' do
+    let(:question) { create(:question) }
+
+    it 'mark answer as valid if after save it question will have only one best answer'
+
+    it 'mark answer as invalid if after save it question will have more than one best answer'
+  end
 end
