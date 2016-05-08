@@ -5,7 +5,6 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe  'GET #index' do
     let(:questions) { create_list(:question, 2) }
-
     before { get :index }
 
     it 'assigns all questions to @questions' do
@@ -85,52 +84,49 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
 
     context 'by not the author of question' do
+      before { valid_update }
+
       it "does not change question attributes" do
-        valid_update
         question.reload
         expect(question.title).to_not eq '12345678910'
         expect(question.body).to_not eq '12345678910'
       end
 
       it "render update.js view" do
-        valid_update
         expect(response).to render_template :update
       end
     end
 
     context 'with valid attributes by author' do
       let(:question) { create(:question, user_id: @user.id) }
+      before { valid_update }
 
       it "assign requested question to @question" do
-        valid_update
         expect(assigns(:question)).to eq question
       end
 
       it "change question attributes" do
-        valid_update
         question.reload
         expect(question.title).to eq "12345678910"
         expect(question.body).to eq "12345678910"
       end
 
       it "render update.js view" do
-        valid_update
         expect(response).to render_template :update
       end
     end
 
     context 'with invalid attributes by author' do
       let(:question) { create(:question, user_id: @user.id) }
+      before { patch :update, id: question, question: {body: "12345", title: nil}, format: :js }
 
       it "does not change question attributes" do
-        patch :update, id: question, question: {body: "12345", title: nil}, format: :js
         question.reload
         expect(question.title).to eq "MyTitle123456789"
         expect(question.body).to eq "MyBody123456789"
       end
 
       it "render update.js view" do
-        patch :update, id: question, question: {body: "12345", title: nil}, format: :js
         expect(response).to render_template :update
       end
     end
@@ -138,17 +134,18 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     sign_in_user
+    let(:delete_question) { delete :destroy, id: question }
 
     context "by the author of the question" do
-      let(:question) { Question.create!(title: 'ExampleTitle', body: 'ExampleBody', user_id: @user.id) }
+      let(:question) { create(:question, title: 'ExampleTitle', body: 'ExampleBody', user_id: @user.id) }
 
       it "deletes question from database" do
         question
-        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+        expect { delete_question }.to change(Question, :count).by(-1)
       end
 
       it "redirect to index view with notice" do
-        delete :destroy, id: question
+        delete_question
         expect(response).to redirect_to questions_url
         expect(flash[:notice]).to be_present
       end
@@ -157,11 +154,11 @@ RSpec.describe QuestionsController, type: :controller do
     context "by not the author of the question" do
       it "doesnt deletes question from database" do
         question
-        expect { delete :destroy, id: question }.to_not change(Question, :count)
+        expect { delete_question }.to_not change(Question, :count)
       end
 
       it "redirects to show view with notice" do
-        delete :destroy, id: question
+        delete_question
         expect(response).to redirect_to question_path(question)
         expect(flash[:notice]).to be_present
       end

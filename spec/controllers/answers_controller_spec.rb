@@ -52,49 +52,46 @@ RSpec.describe AnswersController, type: :controller do
     sign_in_user
 
     context 'by not the author of answer' do
+      before { valid_update }
+
       it "does not change answer attributes" do
-        valid_update
         answer.reload
         expect(answer.body).to_not eq '12345678910'
       end
 
       it "render update.js view" do
-        valid_update
         expect(response).to render_template :update
       end
     end
 
     context 'with valid attributes by author' do
       let(:answer) { create(:answer, user_id: @user.id) }
+      before { valid_update }
 
       it "assign requested answer to @answer" do
-        valid_update
         expect(assigns(:answer)).to eq answer
       end
 
       it "change answer attributes" do
-        valid_update
         answer.reload
         expect(answer.body).to eq "12345678910"
       end
 
       it "render update.js view" do
-        valid_update
         expect(response).to render_template :update
       end
     end
 
     context 'with invalid attributes by author' do
       let(:answer) { create(:answer, user_id: @user.id) }
+      before { patch :update, id: answer, answer: {body: nil}, format: :js }
 
       it "does not change answer attributes" do
-        patch :update, id: answer, answer: {body: nil}, format: :js
         answer.reload
         expect(answer.body).to_not eq nil
       end
 
       it "render update.js view" do
-        patch :update, id: answer, answer: {body: nil}, format: :js
         expect(response).to render_template :update
       end
     end
@@ -105,7 +102,7 @@ RSpec.describe AnswersController, type: :controller do
     let(:destroy_answer) { delete :destroy, id: answer, format: :js }
 
     context 'by the author of the answer' do
-      let(:answer) { Answer.create!(body: 'ExampleBody',question_id: question.id, user_id: @user.id) }
+      let(:answer) { create(:answer, body: 'ExampleBody',question_id: question.id, user_id: @user.id) }
 
       it "delete answer from database" do
         answer
@@ -134,43 +131,37 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #set_as_best' do
     sign_in_user
     let(:answer) { create(:answer, question: question) }
+    let(:set_as_best) { patch :set_as_best, id: answer.id, format: :js }
 
     context 'by the author of the question' do
       let(:question) { create(:question, user_id: @user.id) }
+      before { set_as_best }
 
       it 'assigns questions answers to @answers' do
-        patch :set_as_best, id: answer.id, format: :js
-
         expect(assigns(:answers)).to eq question.answers
       end
 
       it 'change "best" attribute of answer' do
-        patch :set_as_best, id: answer.id, format: :js
         answer.reload
 
         expect(answer.best?).to eq true
       end
 
       it 'render set_as_best.js view' do
-        patch :set_as_best, id: answer.id, format: :js
-
         expect(response).to render_template :set_as_best
       end
     end
 
     context "by not the author of the question" do
-      let(:question) { create(:question) }
+      before { set_as_best }
 
       it 'doesnt change best_answer attribute of question' do
-        patch :set_as_best, id: answer.id, format: :js
         answer.reload
 
         expect(answer.best?).to eq false
       end
 
       it 'render set_as_best.js view' do
-        patch :set_as_best, id: answer.id, format: :js
-
         expect(response).to render_template :set_as_best
       end
     end
