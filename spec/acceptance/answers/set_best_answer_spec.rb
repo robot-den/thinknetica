@@ -21,11 +21,19 @@ feature 'User can choose the best answer', %q{
       expect(page).to have_content 'Best answer'
     end
 
+    within '.answers' do
+      expect(page.first('div')[:id]).to eq "answer-#{answer_one.id}"
+    end
+
     within "#answer-#{ answer_two.id }" do
       click_on 'Mark as best'
 
       expect(page).to_not have_link 'Mark as best'
       expect(page).to have_content 'Best answer'
+    end
+
+    within '.answers' do
+      expect(page.first('div')[:id]).to eq "answer-#{answer_two.id}"
     end
 
     within "#answer-#{ answer_one.id }" do
@@ -55,5 +63,4 @@ feature 'User can choose the best answer', %q{
       expect(page).to_not have_link 'Mark as best'
     end
   end
-
 end
