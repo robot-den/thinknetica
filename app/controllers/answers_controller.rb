@@ -32,7 +32,7 @@ class AnswersController < ApplicationController
   def set_as_best
     question = @answer.question
     if current_user.id == question.user_id
-      Answer.set_as_best(@answer)
+      @answer.set_as_best
       @answers = question.answers.order("best DESC, created_at DESC")
     end
     render 'set_as_best'

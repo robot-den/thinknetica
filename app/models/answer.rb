@@ -5,16 +5,14 @@ class Answer < ActiveRecord::Base
   validates :body, :question_id, :user_id, presence: true
   validates :body, length: { minimum: 10 }
 
-  validate :only_one_best_answer_for_question
+  validates_uniqueness_of :best, scope: [:question_id], conditions: -> { where(best: true) }
+  # # не завелось
+  # # validates :best, uniqueness: { scope: :question_id, conditions: -> { where(best: true) } }
 
-  def self.set_as_best(answer)
-    old_best_answer = Answer.where(question_id: answer.question_id, best: true).first
-    old_best_answer.update(best: false) unless old_best_answer.nil?
-    answer.update(best: true)
-  end
-
-  def only_one_best_answer_for_question
-    errors.add(:best, "best answer for question can be only one") if
-      best? && Answer.where(question_id: question_id, best: true).count > 0
+  def set_as_best
+    transaction do
+      Answer.where(question_id: self.question_id, best: true).update_all(best: false)
+      self.update(best: true)
     end
+  end
 end
