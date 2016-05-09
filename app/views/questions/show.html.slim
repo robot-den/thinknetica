@@ -1,13 +1,17 @@
-.question-errors
-.question
-  = render 'question'
-hr
-.answers-errors
-.answers
-  = render @answers
-hr
-- if user_signed_in?
-  = form_for [@question, @answer], remote: true do |f|
-    = f.label :body, 'Answer'
-    = f.text_area :body
-    = f.submit 'Reply'
+.container-fluid
+  .row
+    .col-lg-8
+      .question-errors
+      .question
+        = render 'question'
+      hr
+      .answers-errors
+      .answers
+        = render @answers
+      hr
+      - if user_signed_in?
+        = form_for [@question, @answer], remote: true do |f|
+          .form-group
+            = f.label :body, 'Answer'
+            = f.text_area :body, class: 'form-control'
+          = f.submit 'Reply', class: 'btn btn-default'

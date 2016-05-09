@@ -1,6 +1,12 @@
-= form_for @question do |f|
-  = f.label :title
-  = f.text_field :title
-  = f.label :body
-  = f.text_area :body
-  = f.submit
+.container-fluid
+  .row
+    .col-lg-8
+      = form_for @question do |f|
+        .form-group
+          = f.label :title
+          = f.text_field :title, class: 'form-control'
+        .form-group
+          = f.label :body
+          = f.text_area :body, class: 'form-control'
+        = f.submit class: 'btn btn-default'
+    .col-lg-4

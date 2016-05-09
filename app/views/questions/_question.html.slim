@@ -1,11 +1,21 @@
-= @question.title
-= @question.body
-- if user_signed_in? && current_user.id == @question.user_id
-  = link_to 'Edit question', '', class: 'edit-question-link'
-  = link_to 'Delete Question', question_path(@question), method: :delete
-= form_for @question, remote: true do |f|
-  = f.label :title, 'Edit title'
-  = f.text_field :title
-  = f.label :body, 'Edit body'
-  = f.text_area :body
-  = f.submit 'Save'
+
+.panel.panel-success
+  .panel-heading
+    h3.panel-title
+      = @question.title
+  .panel-body
+    = @question.body
+  - if user_signed_in? && current_user.id == @question.user_id
+    .panel-footer
+      = link_to 'Edit question', '', class: 'edit-question-link'
+      |   |   
+      = link_to 'Delete Question', question_path(@question), method: :delete
+
+      = form_for @question, remote: true do |f|
+        .form-group
+          = f.label :title, 'Edit title'
+          = f.text_field :title, class: 'form-control'
+        .form-group
+          = f.label :body, 'Edit body'
+          = f.text_area :body, class: 'form-control'
+        = f.submit 'Save', class: 'btn btn-default'

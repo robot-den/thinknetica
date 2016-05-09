@@ -1,8 +1,14 @@
-- if user_signed_in?
-  = link_to 'Ask question', new_question_path
-h1
-  | Here you can see all questions
-p
-  - @questions.each do |question|
-    = question.title
-    = link_to 'Read', question_path(question)
+.container-fluid
+  .row
+    .col-lg-8
+      - @questions.each do |question|
+        .panel.panel-success
+          .panel-heading
+            h3.panel-title
+              = question.title
+          .panel-body
+            .col-lg-11
+              = question.body
+            .col-lg-1
+              = link_to 'Read', question_path(question)
+    .col-lg-4
