@@ -35,7 +35,6 @@ class AnswersController < ApplicationController
       @answer.set_as_best
       @answers = question.answers.order("best DESC, created_at DESC")
     end
-    render 'set_as_best'
   end
 
   private
