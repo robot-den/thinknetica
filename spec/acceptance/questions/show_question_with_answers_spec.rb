@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'User can view question with its answers', %q{
   In order to interact with community
@@ -6,11 +6,9 @@ feature 'User can view question with its answers', %q{
   I want to read question with its answers
 } do
   given(:question) { create(:question) }
-  given(:answer) { create(:answer, question: question) }
+  given!(:answer) { create(:answer, question: question) }
 
   scenario 'user view question with its answers' do
-    answer
-
     visit question_path(question)
 
     expect(page).to have_content question.title

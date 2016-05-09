@@ -38,9 +38,14 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.4.0)
     arel (6.0.3)
+    autoprefixer-rails (6.3.6)
+      execjs
     bcrypt (3.1.11)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (3.3.6)
+      autoprefixer-rails (>= 5.2.1)
+      sass (>= 3.3.4)
     builder (3.2.2)
     byebug (8.2.4)
     capybara (2.7.0)
@@ -50,8 +55,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    childprocess (0.5.9)
-      ffi (~> 1.0, >= 1.0.11)
+    capybara-webkit (1.11.1)
+      capybara (>= 2.3.0, < 2.8.0)
+      json
     coderay (1.1.1)
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
@@ -78,7 +84,6 @@ GEM
     factory_girl_rails (4.7.0)
       factory_girl (~> 4.7.0)
       railties (>= 3.0.0)
-    ffi (1.9.10)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     i18n (0.7.0)
@@ -160,7 +165,6 @@ GEM
       rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    rubyzip (1.2.0)
     sass (3.4.22)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -171,10 +175,6 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    selenium-webdriver (2.53.0)
-      childprocess (~> 0.5)
-      rubyzip (~> 1.0)
-      websocket (~> 1.0)
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
     slim (3.0.6)
@@ -212,7 +212,6 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
-    websocket (1.2.3)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -220,8 +219,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootstrap-sass (~> 3.3.6)
   byebug
   capybara
+  capybara-webkit
   coffee-rails (~> 4.1.0)
   database_cleaner
   devise
@@ -235,7 +236,6 @@ DEPENDENCIES
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
-  selenium-webdriver
   shoulda-matchers
   slim-rails
   spring

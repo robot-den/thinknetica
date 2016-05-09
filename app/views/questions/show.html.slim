@@ -1,11 +1,10 @@
-= @question.title
-= @question.body
-- if user_signed_in? && current_user.id == @question.user_id
-  = link_to 'Delete Question', question_path(@question), method: :delete
+.question-errors
+.question
+  = render 'question'
 hr
 .answers-errors
 .answers
-  = render @question.answers
+  = render @answers
 hr
 - if user_signed_in?
   = form_for [@question, @answer], remote: true do |f|

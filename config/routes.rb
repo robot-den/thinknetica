@@ -3,7 +3,9 @@ Rails.application.routes.draw do
 
   root to: "questions#index"
 
-  resources :questions do
-    resources :answers, except: [:index, :show], shallow: true
+  resources :questions, except: :edit do
+    resources :answers, except: [:index, :show, :edit], shallow: true
   end
+
+  patch "/answers/set_as_best/:id", to: 'answers#set_as_best', as: 'set_best_answer'
 end

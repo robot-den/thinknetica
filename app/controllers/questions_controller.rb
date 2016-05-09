@@ -8,6 +8,7 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    @answers = @question.answers.order("best DESC, created_at DESC")
   end
 
   def new
@@ -24,15 +25,8 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def edit
-  end
-
   def update
-    if @question.update(questions_params)
-      redirect_to @question
-    else
-      render :edit
-    end
+    @question.update(questions_params) if current_user.id == @question.user_id
   end
 
   def destroy

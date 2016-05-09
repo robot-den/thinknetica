@@ -1,3 +1,15 @@
-= answer.body
-- if user_signed_in? && current_user.id == answer.user_id
-  = link_to 'Delete my answer', answer_path(answer), method: :delete
+div id="answer-#{ answer.id }"
+  p= answer.body
+  - if user_signed_in? && current_user.id == answer.user_id
+    p
+      = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+      = form_for answer, remote: true, html: { id: "edit-answer-#{ answer.id }" } do |f|
+        = f.label :body, 'Answer'
+        = f.text_area :body
+        = f.submit 'Save'
+      = link_to 'Delete my answer', answer_path(answer), method: :delete, remote: true
+  - # FIXME N+1 query
+  - if user_signed_in? && answer.question.user_id == current_user.id && !answer.best?
+      = link_to 'Mark as best', set_best_answer_path(answer), method: :patch, remote: true
+  - if answer.best?
+      | Best answer

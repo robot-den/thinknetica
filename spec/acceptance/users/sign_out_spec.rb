@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'User sign out', %q{
   In order to end session
@@ -6,7 +6,7 @@ feature 'User sign out', %q{
   I want to sign out
 } do
   given(:user) { create(:user) }
-  
+
   scenario 'authenticated user try to sign out' do
     sign_in(user)
 

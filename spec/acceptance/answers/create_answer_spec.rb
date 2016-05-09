@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'User can create answers', %q{
   In order to help community
@@ -7,16 +7,6 @@ feature 'User can create answers', %q{
 } do
   given(:question) { create(:question) }
   given(:user) { create(:user) }
-
-  # scenario 'authenticated user creates answer' do
-  #   sign_in(user)
-  #   visit question_path(question)
-  #
-  #   fill_in 'Answer', with: 'That is my answer'
-  #   click_on 'Reply'
-  #
-  #   expect(page).to have_content 'That is my answer'
-  # end
 
   scenario 'authenticated user creates answer via AJAX', js: true do
     sign_in(user)
@@ -34,7 +24,7 @@ feature 'User can create answers', %q{
     sign_in(user)
     visit question_path(question)
 
-    fill_in 'Answer', with: 'My answer'
+    fill_in 'Answer', with: 'Too short'
     click_on 'Reply'
 
     expect(page).to have_content 'Body is too short (minimum is 10 characters)'
