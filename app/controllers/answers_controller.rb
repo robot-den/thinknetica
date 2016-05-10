@@ -2,10 +2,6 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :get_answer, only: [:update, :destroy, :set_as_best]
 
-  def new
-    @answer = Answer.new
-  end
-
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge({user_id: current_user.id}))
