@@ -1,11 +1,13 @@
 class Answer < ActiveRecord::Base
   belongs_to :question
   belongs_to :user
+  has_many :attachments, as: :attachable, dependent: :destroy
 
   validates :body, :question_id, :user_id, presence: true
   validates :body, length: { minimum: 10 }
-
   validates_uniqueness_of :best, scope: [:question_id], conditions: -> { where(best: true) }
+
+  accepts_nested_attributes_for :attachments
 
   def set_as_best
     transaction do

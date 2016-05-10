@@ -3,6 +3,12 @@ div id="answer-#{ answer.id }"
     .panel-body
       .col-lg-10
         = answer.body
+        p
+        | Attachments:
+        ul
+          - answer.attachments.each do |a|
+            li
+              = link_to a.file.identifier, a.file.url
       .col-lg-2
         - # FIXME N+1 query
         - if user_signed_in? && answer.question.user_id == current_user.id && !answer.best?
@@ -18,5 +24,5 @@ div id="answer-#{ answer.id }"
             = f.text_area :body, class: 'form-control'
           = f.submit 'Save', class: 'btn btn-default'
         = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-        |   |   
+        |   |
         = link_to 'Delete my answer', answer_path(answer), method: :delete, remote: true

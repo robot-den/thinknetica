@@ -14,4 +14,8 @@
           .form-group
             = f.label :body, 'Answer'
             = f.text_area :body, class: 'form-control'
+          .form-group
+            = f.fields_for :attachments do |a|
+              = a.label :file
+              = a.file_field :file
           = f.submit 'Reply', class: 'btn btn-default'

@@ -15,10 +15,10 @@ feature 'User can attach files to question', %q{
   scenario 'autheticated user create question with files' do
     fill_in 'Title', with: 'My test question'
     fill_in 'Body', with: 'I want to ask you about rails'
-    attach_file 'File', "#{Rails.root}/spec/acceptance_macros.rb"
+    attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
     click_on 'Create Question'
 
-    expect(page).to have_content 'acceptance_macros.rb'
+    expect(page).to have_link 'rails_helper.rb', href: "/uploads/attachment/file/1/rails_helper.rb"
   end
 
 end

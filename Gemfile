@@ -11,6 +11,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'slim-rails'
 gem 'devise'
 gem 'bootstrap-sass', '~> 3.3.6'
+gem 'carrierwave'
+gem 'remotipart'
 
 group :development, :test do
   gem 'byebug'

@@ -6,15 +6,6 @@ class AnswersController < ApplicationController
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge({user_id: current_user.id}))
     @answer.save
-    # respond_to do |format|
-    #   if @answer.save
-    #     format.html { redirect_to @question }
-    #     format.js
-    #   else
-    #     format.html { redirect_to @question }
-    #     format.js { render :nothing => true }
-    #   end
-    # end
   end
 
   def update
@@ -40,7 +31,7 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, attachments_attributes: [:file])
   end
 
 end
