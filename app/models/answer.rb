@@ -7,7 +7,7 @@ class Answer < ActiveRecord::Base
   validates :body, length: { minimum: 10 }
   validates_uniqueness_of :best, scope: [:question_id], conditions: -> { where(best: true) }
 
-  accepts_nested_attributes_for :attachments
+  accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
   def set_as_best
     transaction do
