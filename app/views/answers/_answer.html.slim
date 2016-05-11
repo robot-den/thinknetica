@@ -6,12 +6,7 @@ div id="answer-#{ answer.id }"
         p
         | Attachments:
         ul
-          - answer.attachments.each do |a, author_id = answer.user_id|
-            div id="file-#{ a.id }"
-              li
-                = link_to a.file.identifier, a.file.url
-                - if user_signed_in? && current_user.id == author_id
-                  = link_to 'remove file', attachment_path(a), method: :delete, remote: true
+          = render partial: 'attachments/attachment', collection: answer.attachments, locals: { author_id: answer.user_id }
       .col-lg-2
         - # FIXME N+1 query
         - if user_signed_in? && answer.question.user_id == current_user.id && !answer.best?
