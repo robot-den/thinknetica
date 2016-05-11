@@ -8,11 +8,12 @@
     p
     | Attachments:
     ul
-      - @question.attachments.each do |a|
+      - @question.attachments.each do |a, author_id = @question.user_id|
         div id="file-#{ a.id }"
           li
             = link_to a.file.identifier, a.file.url
-            = link_to 'remove file', attachment_path(a), method: :delete, remote: true
+            - if user_signed_in? && current_user.id == author_id
+              = link_to 'remove file', attachment_path(a), method: :delete, remote: true
 
   - if user_signed_in? && current_user.id == @question.user_id
     .panel-footer
