@@ -1,0 +1,52 @@
+doctype html
+html
+  head
+    title Thinknetica
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  body
+    nav.navbar.navbar-default
+      .container-fluid
+        /! Brand and toggle get grouped for better mobile display
+        .navbar-header
+          = link_to 'Thinknetica!', root_path, class: 'navbar-brand'
+        /! Collect the nav links, forms, and other content for toggling
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              - if user_signed_in?
+                = link_to 'Ask question', new_question_path
+            li
+              a href="#"  Link
+          form.navbar-form.navbar-left role="search"
+            .form-group
+              input.form-control placeholder="Doesn't work :(" type="text" /
+            button.btn.btn-default type="submit"  Submit
+          ul.nav.navbar-nav.navbar-right
+            li
+              - if user_signed_in?
+                = link_to 'Log out', destroy_user_session_path, method: :delete
+              - else
+                = link_to 'Sign in', new_user_session_path
+            li.dropdown
+              a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+                | Dropdown
+                span.caret
+              ul.dropdown-menu
+                li
+                  a href="#"  Action
+                li
+                  a href="#"  Another action
+                li
+                  a href="#"  Something else here
+                li.divider role="separator"
+                li
+                  a href="#"  Separated link
+        /! /.navbar-collapse
+      /! /.container-fluid
+    div
+      = notice
+    div
+      = alert
+    = yield

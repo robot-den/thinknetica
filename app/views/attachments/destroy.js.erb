@@ -1,0 +1,5 @@
+<% if @attachment.destroyed? %>
+  $( '<%= "#file-#{ @attachment.id }" %>' ).remove();
+<% else %>
+  console.log("you can't delete that file")
+<% end %>

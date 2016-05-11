@@ -8,11 +8,13 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    @answer.attachments.build
     @answers = @question.answers.order("best DESC, created_at DESC")
   end
 
   def new
     @question = Question.new
+    @question.attachments.build
   end
 
   def create
@@ -47,6 +49,6 @@ class QuestionsController < ApplicationController
   end
 
   def questions_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, attachments_attributes: [:file, :id, :_destroy])
   end
 end
