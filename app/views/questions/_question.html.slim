@@ -2,7 +2,14 @@
 .panel.panel-success
   .panel-heading
     h3.panel-title
-      = @question.title
+      .row
+        .col-lg-9
+          = @question.title
+        .col-lg-3
+          .rating
+            = link_to 'vote_down'
+            = ' - 0 - '
+            = link_to 'vote_up'
   .panel-body
     = @question.body
     p
