@@ -2,7 +2,11 @@
 .panel.panel-success
   .panel-heading
     h3.panel-title
-      = @question.title
+      .row
+        .col-lg-9
+          = @question.title
+        .col-lg-3
+          = render partial: 'votes/rating', locals: { votable: @question }
   .panel-body
     = @question.body
     p
