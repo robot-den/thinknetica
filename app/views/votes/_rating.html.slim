@@ -1,0 +1,6 @@
+.rating
+  - if user_signed_in? && votable.user_id != current_user.id
+    = link_to 'vote_down', vote_path(value: '-1', votable_type: votable.class.name, votable_id: votable.id), method: :post, remote: true
+  = votable.current_rating
+  - if user_signed_in? && votable.user_id != current_user.id
+    = link_to 'vote_up', vote_path(value: '1', votable_type: votable.class.name, votable_id: votable.id), method: :post, remote: true

@@ -6,10 +6,7 @@
         .col-lg-9
           = @question.title
         .col-lg-3
-          .rating
-            = link_to 'vote_down'
-            = @question.current_rating
-            = link_to 'vote_up'
+          = render partial: 'votes/rating', locals: { votable: @question }
   .panel-body
     = @question.body
     p

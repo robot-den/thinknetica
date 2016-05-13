@@ -4,7 +4,7 @@ class CreateVotes < ActiveRecord::Migration
       t.belongs_to :user
       t.integer :votable_id
       t.string :votable_type
-      t.integer :value
+      t.integer :value, default: 0
       t.timestamps null: false
     end
 

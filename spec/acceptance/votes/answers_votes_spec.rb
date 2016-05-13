@@ -1,19 +1,21 @@
 require 'acceptance_helper'
 
-feature 'User can vote up or down for questions', %q{
+feature 'User can vote up or down for answer', %q{
   In order to evaluate the usefulness
   As an authenticated User
   I want to vote for question
 } do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
+  given(:answer) { create(:answer, question: question) }
 
   #  Не проходит
-  scenario "vote up/down for another's question", js: true do
+  scenario "vote up/down for another's answer", js: true do
     sign_in(user)
+    answer
     visit question_path(question)
 
-    within '.question .rating' do
+    within ".answers #answer-#{ answer.id } .rating" do
       click_on 'vote_up'
       expect(page).to have_content '1'
       expect(page).to have_css("a.vote_up.disabled")
@@ -32,10 +34,10 @@ feature 'User can vote up or down for questions', %q{
 
   scenario "vote for his own question", js: true do
     sign_in(user)
-    question = create(:question, user: user)
+    answer = create(:answer, question: question, user: user)
     visit question_path(question)
 
-    within '.question .rating' do
+    within ".answers #answer-#{ answer.id } .rating" do
       expect(page).to have_content '0'
       expect(page).to_not have_link 'vote_up'
       expect(page).to_not have_link 'vote_down'
@@ -43,9 +45,10 @@ feature 'User can vote up or down for questions', %q{
   end
 
   scenario 'non-authenticated user try to vote for question', js: true do
+    answer
     visit question_path(question)
 
-    within '.question .rating' do
+    within ".answers #answer-#{ answer.id } .rating" do
       expect(page).to have_content '0'
       expect(page).to_not have_link 'vote_up'
       expect(page).to_not have_link 'vote_down'
