@@ -1,8 +1,12 @@
 
 .panel.panel-success
   .panel-heading
-    h3.panel-title
-      = @question.title
+    .row
+      .col-lg-8
+        h3.panel-title
+          = @question.title
+      .col-lg-4
+        = render 'votes/vote'
   .panel-body
     = @question.body
     p
