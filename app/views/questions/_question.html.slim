@@ -6,7 +6,7 @@
         h3.panel-title
           = @question.title
       .col-lg-4
-        = render 'votes/vote'
+        = render partial: 'votes/vote', locals: { votable: @question }
   .panel-body
     = @question.body
     p
