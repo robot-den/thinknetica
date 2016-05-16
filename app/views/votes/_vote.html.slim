@@ -1,5 +1,5 @@
 .rating
-  = link_to 'up'
-  = link_to 'down'
-  = link_to 'cancel'
+  = link_to 'up', questions_vote_up_path, votable_id: votable.id, votable_type: votable.class.name, method: :post, remote: true
+  = link_to 'down', questions_vote_down_path, votable_id: votable.id, votable_type: votable.class.name, method: :post, remote: true
+  = link_to 'cancel', questions_vote_cancel_path, votable_id: votable.id, votable_type: votable.class.name, method: :post, remote: true
   = votable.rating
