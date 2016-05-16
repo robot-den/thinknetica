@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :get_question, only: [:show, :edit, :update, :destroy]
+  before_action :get_votable_question, only: [:vote_up, :vote_down, :vote_cancel]
 
   def index
     @questions = Question.all
@@ -42,7 +43,30 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def vote_up
+    @question.vote_up(current_user)
+    render_voting
+  end
+
+  def vote_down
+    @question.vote_down(current_user)
+    render_voting
+  end
+
+  def vote_cancel
+    @question.vote_cancel(current_user)
+    render_voting
+  end
+
   private
+
+  def render_voting
+    render json: { id: @question.id, rating: @question.rating }
+  end
+
+  def get_votable_question
+    @question = Question.find(params[:votable_id])
+  end
 
   def get_question
     @question = Question.find(params[:id])

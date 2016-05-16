@@ -172,4 +172,55 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'POST #vote_up' do
+    sign_in_user
+    let(:vote_up) { post :vote_up, votable_id: question.id, votable_type: question.class.name, format: :js }
+    let!(:vote) { create(:vote, votable: question, user: @user) }
+
+    it "sets vote's value equal 1" do
+      vote_up
+      vote.reload
+      expect(vote.value).to eq 1
+    end
+
+    it "render json with question id and rating" do
+      vote_up
+      expect(response.body).to eq ({ id: question.id, rating: question.rating }).to_json
+    end
+  end
+
+  describe 'POST #vote_down' do
+    sign_in_user
+    let(:vote_down) { post :vote_down, votable_id: question.id, votable_type: question.class.name, format: :js }
+    let!(:vote) { create(:vote, votable: question, user: @user) }
+
+    it "sets vote's value equal -1" do
+      vote_down
+      vote.reload
+      expect(vote.value).to eq -1
+    end
+
+    it "render json with question id and rating" do
+      vote_down
+      expect(response.body).to eq ({ id: question.id, rating: question.rating }).to_json
+    end
+  end
+
+  describe 'POST #vote_cancel' do
+    sign_in_user
+    let(:vote_cancel) { post :vote_cancel, votable_id: question.id, votable_type: question.class.name, format: :js }
+    let!(:vote) { create(:vote, :up, votable: question, user: @user) }
+
+    it "sets vote's value equal 0" do
+      vote_cancel
+      vote.reload
+      expect(vote.value).to eq 0
+    end
+
+    it "render json with question id and rating" do
+      vote_cancel
+      expect(response.body).to eq ({ id: question.id, rating: question.rating }).to_json
+    end
+  end
 end

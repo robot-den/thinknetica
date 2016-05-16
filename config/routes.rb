@@ -10,4 +10,8 @@ Rails.application.routes.draw do
   resources :attachments, only: :destroy
 
   patch "/answers/set_as_best/:id", to: 'answers#set_as_best', as: 'set_best_answer'
+
+  post "/questions/vote_up", to: 'questions#vote_up'
+  post "/questions/vote_down", to: 'questions#vote_down'
+  post "/questions/vote_cancel", to: 'questions#vote_cancel'
 end
