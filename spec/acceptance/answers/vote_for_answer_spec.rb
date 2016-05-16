@@ -14,7 +14,7 @@ feature 'user can vote for answer', %q{
     answer
     visit question_path(question)
 
-    within ".answer-#{answer.id} .rating" do
+    within "#answer-#{answer.id} .rating" do
       click_on 'up'
 
       expect(page).to have_content '1'
@@ -41,10 +41,11 @@ feature 'user can vote for answer', %q{
   scenario "authenticated user vote for his own answer", js: true do
     sign_in(user)
     question = create(:question, user: user)
-    answer
+    answer = create(:answer, question: question, user: user)
+
     visit question_path(question)
 
-    within ".answer-#{answer.id} .rating" do
+    within "#answer-#{answer.id} .rating" do
       expect(page).to have_content '0'
       expect(page).to_not have_link 'cancel'
       expect(page).to_not have_link 'up'
@@ -56,7 +57,7 @@ feature 'user can vote for answer', %q{
     answer
     visit question_path(question)
 
-    within ".answer-#{answer.id} .rating" do
+    within "#answer-#{answer.id} .rating" do
       expect(page).to have_content '0'
       expect(page).to_not have_link 'cancel'
       expect(page).to_not have_link 'up'

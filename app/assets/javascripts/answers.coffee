@@ -7,3 +7,7 @@ $ ->
     answer_id = $(this).data('answerId');
     $(this).hide();
     $('#edit-answer-' + answer_id).show();
+
+  $('.answers .rating a').bind 'ajax:success', (e, data, status, xhr) ->
+    response = $.parseJSON(xhr.responseText)
+    $('#answer-' + response.id + ' .rating-value').html(response.rating)

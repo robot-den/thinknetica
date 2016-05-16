@@ -14,4 +14,8 @@ Rails.application.routes.draw do
   post "/questions/vote_up", to: 'questions#vote_up'
   post "/questions/vote_down", to: 'questions#vote_down'
   post "/questions/vote_cancel", to: 'questions#vote_cancel'
+
+  post "/answers/vote_up", to: 'answers#vote_up'
+  post "/answers/vote_down", to: 'answers#vote_down'
+  post "/answers/vote_cancel", to: 'answers#vote_cancel'
 end
