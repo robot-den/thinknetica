@@ -6,3 +6,6 @@ $ ->
     e.preventDefault();
     $(this).hide();
     $('.edit_question').show();
+  $('.rating a').bind 'ajax:success', (e, data, status, xhr) ->
+    response = $.parseJSON(xhr.responseText)
+    $('.question .rating-value').html(response.rating)
