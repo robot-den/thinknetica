@@ -16,23 +16,23 @@ feature 'user can vote for question', %q{
       click_on 'up'
 
       expect(page).to have_content '1'
-      # expect(page).to have_link 'cancel'
-      # expect(page).to_not have_link 'up'
-      # expect(page).to_not have_link 'down'
+      expect(page).to have_link 'cancel'
+      expect(page).to_not have_link 'up'
+      expect(page).to_not have_link 'down'
 
       click_on 'cancel'
 
       expect(page).to have_content '0'
-      # expect(page).to_not have_link 'cancel'
-      # expect(page).to have_link 'up'
-      # expect(page).to have_link 'down'
+      expect(page).to_not have_link 'cancel'
+      expect(page).to have_link 'up'
+      expect(page).to have_link 'down'
 
       click_on 'down'
 
       expect(page).to have_content '-1'
-      # expect(page).to have_link 'cancel'
-      # expect(page).to_not have_link 'up'
-      # expect(page).to_not have_link 'down'
+      expect(page).to have_link 'cancel'
+      expect(page).to_not have_link 'up'
+      expect(page).to_not have_link 'down'
     end
   end
   scenario "authenticated user vote for his own question", js: true do

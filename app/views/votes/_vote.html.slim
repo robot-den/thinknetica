@@ -1,13 +1,24 @@
 .rating
   - if user_signed_in? && votable.user_id != current_user.id
-    - # грязный хак
+    - # больше ссылок богу ссылок
     - if votable.class.name == 'Question'
-      = link_to 'up', questions_vote_up_path(votable_id: votable.id, votable_type: votable.class.name), method: :post, remote: true
-      = link_to 'down', questions_vote_down_path(votable_id: votable.id, votable_type: votable.class.name), method: :post, remote: true
-      = link_to 'cancel', questions_vote_cancel_path(votable_id: votable.id, votable_type: votable.class.name), method: :post, remote: true
+      - if votable.votes.exists?(user: current_user)
+        = link_to 'cancel', vote_cancel_question_path(votable), method: :post, remote: true, class: 'vote-cancel-link'
+        = link_to 'up', vote_up_question_path(votable), method: :post, remote: true, class: 'vote-up-link', style: "display:none;"
+        = link_to 'down', vote_down_question_path(votable), method: :post, remote: true, class: 'vote-down-link', style: "display:none;"
+      - else
+        = link_to 'cancel', vote_cancel_question_path(votable), method: :post, remote: true, class: 'vote-cancel-link', style: "display:none;"
+        = link_to 'up', vote_up_question_path(votable), method: :post, remote: true, class: 'vote-up-link'
+        = link_to 'down', vote_down_question_path(votable), method: :post, remote: true, class: 'vote-down-link'
+
     - elsif votable.class.name == 'Answer'
-      = link_to 'up', answers_vote_up_path(votable_id: votable.id, votable_type: votable.class.name), method: :post, remote: true
-      = link_to 'down', answers_vote_down_path(votable_id: votable.id, votable_type: votable.class.name), method: :post, remote: true
-      = link_to 'cancel', answers_vote_cancel_path(votable_id: votable.id, votable_type: votable.class.name), method: :post, remote: true
+      - if votable.votes.exists?(user: current_user)
+        = link_to 'cancel', vote_cancel_answer_path(votable), method: :post, remote: true, class: 'vote-cancel-link'
+        = link_to 'up', vote_up_answer_path(votable), method: :post, remote: true, class: 'vote-up-link', style: "display:none;"
+        = link_to 'down', vote_down_answer_path(votable), method: :post, remote: true, class: 'vote-down-link', style: "display:none;"
+      - else
+        = link_to 'cancel', vote_cancel_answer_path(votable), method: :post, remote: true, class: 'vote-cancel-link', style: "display:none;"
+        = link_to 'up', vote_up_answer_path(votable), method: :post, remote: true, class: 'vote-up-link'
+        = link_to 'down', vote_down_answer_path(votable), method: :post, remote: true, class: 'vote-down-link'
   .rating-value
     = votable.rating
