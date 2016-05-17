@@ -3,6 +3,7 @@ module Voted
 
   included do
     before_action :get_votable, only: [:vote_up, :vote_down, :vote_cancel]
+    before_action :check_author, only: [:vote_up, :vote_down]
   end
 
   def vote_up
@@ -21,6 +22,10 @@ module Voted
   end
 
   private
+
+  def check_author
+    render nothing: true, status: 422 if @votable.user_id == current_user.id
+  end
 
   def render_voting
     render json: { id: @votable.id, rating: @votable.rating }

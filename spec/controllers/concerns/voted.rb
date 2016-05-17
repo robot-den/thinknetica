@@ -8,34 +8,65 @@ shared_examples 'voted' do
   describe 'POST #vote_up' do
     sign_in_user
     let(:vote_up) { post :vote_up, votable_id: votable.id, votable_type: votable.class.name, format: :js }
-    let!(:vote) { create(:vote, votable: votable, user: @user) }
 
-    it "sets vote's value equal 1" do
-      vote_up
-      vote.reload
-      expect(vote.value).to eq 1
+    context 'if user is not author of votable' do
+      it "create vote with value 1" do
+        vote_up
+        expect(votable.votes.first.value).to eq 1
+      end
+
+      it "render json with votable id and rating" do
+        vote_up
+        expect(response.body).to eq ({ id: votable.id, rating: votable.rating }).to_json
+      end
     end
 
-    it "render json with question id and rating" do
-      vote_up
-      expect(response.body).to eq ({ id: votable.id, rating: votable.rating }).to_json
+    context 'if user is author of votable' do
+      let(:votable) { create(model.to_sym, user: @user) }
+
+      it "doesn't create vote" do
+        vote_up
+        expect(votable.votes.count).to eq 0
+      end
+
+      it "render nothing with status 422" do
+        vote_up
+        expect(response.body).to eq ''
+        expect(response.status).to eq 422
+      end
     end
+
   end
 
   describe 'POST #vote_down' do
     sign_in_user
     let(:vote_down) { post :vote_down, votable_id: votable.id, votable_type: votable.class.name, format: :js }
-    let!(:vote) { create(:vote, votable: votable, user: @user) }
 
-    it "sets vote's value equal -1" do
-      vote_down
-      vote.reload
-      expect(vote.value).to eq -1
+    context 'if user is not author of votable' do
+      it "create vote with value -1" do
+        vote_down
+        expect(votable.votes.first.value).to eq -1
+      end
+
+      it "render json with votable id and rating" do
+        vote_down
+        expect(response.body).to eq ({ id: votable.id, rating: votable.rating }).to_json
+      end
     end
 
-    it "render json with question id and rating" do
-      vote_down
-      expect(response.body).to eq ({ id: votable.id, rating: votable.rating }).to_json
+    context 'if user is author of votable' do
+      let(:votable) { create(model.to_sym, user: @user) }
+
+      it "doesn't create vote" do
+        vote_down
+        expect(votable.votes.count).to eq 0
+      end
+
+      it "render nothing with status 422" do
+        vote_down
+        expect(response.body).to eq ''
+        expect(response.status).to eq 422
+      end
     end
   end
 
@@ -44,13 +75,12 @@ shared_examples 'voted' do
     let(:vote_cancel) { post :vote_cancel, votable_id: votable.id, votable_type: votable.class.name, format: :js }
     let!(:vote) { create(:vote, :up, votable: votable, user: @user) }
 
-    it "sets vote's value equal 0" do
+    it "destroy vote" do
       vote_cancel
-      vote.reload
-      expect(vote.value).to eq 0
+      expect(votable.votes.count).to eq 0
     end
 
-    it "render json with question id and rating" do
+    it "render json with votable id and rating" do
       vote_cancel
       expect(response.body).to eq ({ id: votable.id, rating: votable.rating }).to_json
     end
