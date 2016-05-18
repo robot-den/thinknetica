@@ -29,10 +29,10 @@ shared_examples 'voted' do
         expect(votable.votes.count).to eq 0
       end
 
-      it "render nothing with status 422" do
+      it "render nothing with status 403" do
         vote_up
         expect(response.body).to eq ''
-        expect(response.status).to eq 422
+        expect(response.status).to eq 403
       end
     end
 
@@ -62,10 +62,10 @@ shared_examples 'voted' do
         expect(votable.votes.count).to eq 0
       end
 
-      it "render nothing with status 422" do
+      it "render nothing with status 403" do
         vote_down
         expect(response.body).to eq ''
-        expect(response.status).to eq 422
+        expect(response.status).to eq 403
       end
     end
   end

@@ -4,6 +4,7 @@ module Voted
   included do
     before_action :get_votable, only: [:vote_up, :vote_down, :vote_cancel]
     before_action :check_author, only: [:vote_up, :vote_down]
+    before_action :check_exists, only: [:vote_up, :vote_down]
   end
 
   def vote_up
@@ -24,7 +25,11 @@ module Voted
   private
 
   def check_author
-    render nothing: true, status: 422 if @votable.user_id == current_user.id || @votable.votes.exists?(user: current_user)
+    render nothing: true, status: 403 if @votable.user_id == current_user.id
+  end
+
+  def check_exists
+    render nothing: true, status: 403 if @votable.votes.exists?(user: current_user)
   end
 
   def render_voting(status)

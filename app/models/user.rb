@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
-  has_many :questions
-  has_many :answers
-  has_many :votes
+  has_many :questions, dependent: :destroy
+  has_many :answers, dependent: :destroy
+  has_many :votes, dependent: :destroy
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
