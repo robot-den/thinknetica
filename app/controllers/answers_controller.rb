@@ -1,13 +1,16 @@
 class AnswersController < ApplicationController
   include Voted
-  
+
   before_action :authenticate_user!
   before_action :get_answer, only: [:update, :destroy, :set_as_best]
 
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge({user_id: current_user.id}))
-    @answer.save
+    if @answer.save
+      PrivatePub.publish_to "/questions/#{@question.id}/answers", answer: @answer.to_json
+      render nothing: true
+    end
   end
 
   def update
