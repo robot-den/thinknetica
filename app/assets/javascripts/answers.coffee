@@ -5,53 +5,17 @@ $ ->
   # render form for edit answer
   $('.answers').on 'click', '.edit-answer-link', (e) ->
     e.preventDefault();
-    answer_id = $(this).data('answerId');
+    answer_id = $(this).data('answerId')
+    form = "<form class=\"edit_answer\" accept-charset=\"UTF-8\" method=\"post\" action=\"/answers/#{answer_id}\" style=\"display: block;\" data-remote=\"true\">
+        <input type=\"hidden\" name=\"utf8\" value=\"✓\">
+        <input type=\"hidden\" name=\"_method\" value=\"patch\">
+        <div class=\"form-group\">
+          <label for=\"answer_body\" value=\"Answer\"></label>
+          <textarea class=\"form-control\" name=\"answer[body]\" id=\"answer_body\"></textarea>
+        </div>
+        <input type=\"submit\" name=\"commit\" value=\"Save\" class=\"btn btn-default\">
+      </form>"
     $(this).hide();
-
-    form = document.createElement("form");
-
-    form.className = "edit_answer"
-    form.setAttribute('accept-charset','UTF-8')
-    form.setAttribute('method',"post")
-    form.setAttribute('action', '/answers/' + answer_id)
-    form.setAttribute('style', 'display: block;')
-    form.setAttribute('data-remote', 'true')
-
-    input1 = document.createElement("input")
-    input1.setAttribute('type',"hidden")
-    input1.setAttribute('name',"utf8")
-    input1.setAttribute('value',"✓")
-
-    input2 = document.createElement("input")
-    input2.setAttribute('type',"hidden")
-    input2.setAttribute('name',"_method")
-    input2.setAttribute('value',"patch")
-
-    div = document.createElement("div")
-    div.className = 'form-group'
-
-    label = document.createElement("label")
-    label.setAttribute('for', 'answer_body')
-    label.setAttribute('value', 'Answer')
-
-    textarea = document.createElement("textarea")
-    textarea.className = 'form-control'
-    textarea.setAttribute('name', 'answer[body]')
-    textarea.setAttribute('id', 'answer_body')
-
-    submit = document.createElement("input")
-    submit.setAttribute('type', 'submit')
-    submit.setAttribute('name', 'commit')
-    submit.setAttribute('value', 'Save')
-    submit.setAttribute('class', 'btn btn-default')
-
-    form.appendChild(input1)
-    form.appendChild(input2)
-    div.appendChild(label)
-    div.appendChild(textarea)
-    form.appendChild(div)
-    form.appendChild(submit)
-
     $("#answer-#{answer_id} .panel-footer").append(form)
 
   #toggle links for votes
