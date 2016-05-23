@@ -17,11 +17,6 @@ div id="answer-#{ answer.id }"
       .panel-footer
         = render partial: 'votes/vote', locals: { votable: answer }
         - if user_signed_in? && current_user.id == answer.user_id
-          = form_for answer, remote: true, html: { id: "edit-answer-#{ answer.id }" } do |f|
-            .form-group
-              = f.label :body, 'Answer'
-              = f.text_area :body, class: 'form-control'
-            = f.submit 'Save', class: 'btn btn-default'
           = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
           |   |
           = link_to 'Delete my answer', answer_path(answer), method: :delete, remote: true
