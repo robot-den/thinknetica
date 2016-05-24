@@ -21,7 +21,7 @@ $ ->
       <input type=\"submit\" name=\"commit\" value=\"Send\" class=\"btn btn-default\">
     </form>"
     $(this).hide();
-    $('.question .comments').append(comment_form);
+    $(this).closest('.comments').append(comment_form);
 
   #toggle vote links
   $('.question .rating a').bind 'ajax:success', (e, data, status, xhr) ->
@@ -65,6 +65,7 @@ $ ->
     commentable_type = data['commentable_type']
     commentable_id = data['commentable_id']
     comment_form = "<p>#{comment.body}</p>"
-    console.log(data)
     if commentable_type == 'Question'
       $('.question .comments').append(comment_form)
+    else if commentable_type == 'Answer'
+      $("#answer-#{commentable_id} .comments").append(comment_form)

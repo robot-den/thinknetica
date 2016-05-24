@@ -1,4 +1,4 @@
-div id="answer-#{ answer.id }"
+div class="answer" id="answer-#{ answer.id }" data={answer_id: "#{answer.id}"}
   .panel.panel-default
     .panel-body
       .col-lg-10
@@ -20,3 +20,7 @@ div id="answer-#{ answer.id }"
           = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
           |   |
           = link_to 'Delete my answer', answer_path(answer), method: :delete, remote: true
+      - if user_signed_in?
+        .panel-footer.comments
+          = link_to 'add comment', '#', class: 'add-comment-link'
+          = render answer.comments

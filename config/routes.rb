@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   root to: "questions#index"
 
   resources :questions, except: :edit, concerns: [:votable, :commentable] do
-    resources :answers, only: [:create, :update, :destroy], shallow: true, concerns: :votable
+    resources :answers, only: [:create, :update, :destroy], shallow: true, concerns: [:votable, :commentable]
   end
 
   resources :attachments, only: :destroy

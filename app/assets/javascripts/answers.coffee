@@ -36,3 +36,18 @@ $ ->
   PrivatePub.subscribe '/questions/' + question_id + '/answers', (data, channel) ->
     answer = $.parseJSON(data['answer'])
     $('.answers').append(answer.body)
+
+  #show form for new comment
+  $('.answers .comments').on 'click', '.add-comment-link', (e) ->
+    e.preventDefault();
+    answer_id = $(this).closest('.answer').data('answerId')
+    comment_form = "<div class=\"comment-errors\"></div><form class=\"new_comment\" id=\"new_comment\" action=\"/answers/#{answer_id}/create_comment\" accept-charset=\"UTF-8\" data-remote=\"true\" method=\"post\">
+      <input name=\"utf8\" type=\"hidden\" value=\"✓\">
+      <div class=\"form-group\">
+        <label for=\"comment_body\">Comment</label>
+        <textarea class=\"form-control\" name=\"comment[body]\" id=\"comment_body\"></textarea>
+      </div>
+      <input type=\"submit\" name=\"commit\" value=\"Send\" class=\"btn btn-default\">
+    </form>"
+    $(this).hide();
+    $(this).closest('.comments').append(comment_form);
