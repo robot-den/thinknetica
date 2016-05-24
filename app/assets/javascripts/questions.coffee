@@ -8,6 +8,21 @@ $ ->
     $(this).hide();
     $('.edit_question').show();
 
+  #show form for new comment
+  $('.question .comments').on 'click', '.add-comment-link', (e) ->
+    e.preventDefault();
+    question_id = $('.question').data('questionId')
+    comment_form = "<div class=\"comment-errors\"></div><form class=\"new_comment\" id=\"new_comment\" action=\"/questions/#{question_id}/create_comment\" accept-charset=\"UTF-8\" data-remote=\"true\" method=\"post\">
+      <input name=\"utf8\" type=\"hidden\" value=\"✓\">
+      <div class=\"form-group\">
+        <label for=\"comment_body\">Comment</label>
+        <textarea class=\"form-control\" name=\"comment[body]\" id=\"comment_body\"></textarea>
+      </div>
+      <input type=\"submit\" name=\"commit\" value=\"Send\" class=\"btn btn-default\">
+    </form>"
+    $(this).hide();
+    $('.question .comments').append(comment_form);
+
   #toggle vote links
   $('.question .rating a').bind 'ajax:success', (e, data, status, xhr) ->
     response = $.parseJSON(xhr.responseText)
@@ -42,3 +57,14 @@ $ ->
     </div>"
 
     $('.questions').append(question_form)
+
+  #render new comments via comet
+  question_id = $('.question').data('questionId')
+  PrivatePub.subscribe "/questions/#{question_id}/comments", (data, channel) ->
+    comment = $.parseJSON(data['comment'])
+    commentable_type = data['commentable_type']
+    commentable_id = data['commentable_id']
+    comment_form = "<p>#{comment.body}</p>"
+    console.log(data)
+    if commentable_type == 'Question'
+      $('.question .comments').append(comment_form)

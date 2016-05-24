@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   it_behaves_like 'voted'
+  it_behaves_like 'commented'
 
   let(:question) { create(:question) }
 
