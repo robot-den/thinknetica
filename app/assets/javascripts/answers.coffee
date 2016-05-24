@@ -16,7 +16,7 @@ $ ->
         <input type=\"submit\" name=\"commit\" value=\"Save\" class=\"btn btn-default\">
       </form>"
     $(this).hide();
-    $("#answer-#{answer_id} .panel-footer").append(form)
+    $("#answer-#{answer_id} .answers-links").append(form)
 
   #toggle links for votes
   $('.answers .rating a').bind 'ajax:success', (e, data, status, xhr) ->

@@ -14,7 +14,7 @@ div class="answer" id="answer-#{ answer.id }" data={answer_id: "#{answer.id}"}
         - if answer.best?
             | Best answer
 
-      .panel-footer
+      .panel-footer.answers-links
         = render partial: 'votes/vote', locals: { votable: answer }
         - if user_signed_in? && current_user.id == answer.user_id
           = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
