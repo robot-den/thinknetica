@@ -16,6 +16,7 @@ gem 'remotipart'
 gem 'cocoon'
 gem 'private_pub'
 gem 'thin'
+gem 'skim'
 
 group :development, :test do
   gem 'byebug'

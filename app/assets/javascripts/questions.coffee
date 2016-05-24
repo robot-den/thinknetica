@@ -12,16 +12,8 @@ $ ->
   $('.question .comments').on 'click', '.add-comment-link', (e) ->
     e.preventDefault();
     question_id = $('.question').data('questionId')
-    comment_form = "<div class=\"comment-errors\"></div><form class=\"new_comment\" id=\"new_comment\" action=\"/questions/#{question_id}/create_comment\" accept-charset=\"UTF-8\" data-remote=\"true\" method=\"post\">
-      <input name=\"utf8\" type=\"hidden\" value=\"✓\">
-      <div class=\"form-group\">
-        <label for=\"comment_body\">Comment</label>
-        <textarea class=\"form-control\" name=\"comment[body]\" id=\"comment_body\"></textarea>
-      </div>
-      <input type=\"submit\" name=\"commit\" value=\"Send\" class=\"btn btn-default\">
-    </form>"
     $(this).hide();
-    $(this).closest('.comments').append(comment_form);
+    $(this).closest('.comments').append(JST["templates/new_comment_form"]({commentable_type: 'questions', commentable_id: question_id}));
 
   #toggle vote links
   $('.question .rating a').bind 'ajax:success', (e, data, status, xhr) ->
@@ -39,24 +31,7 @@ $ ->
   #render new question via comet
   PrivatePub.subscribe '/questions', (data, channel) ->
     question = $.parseJSON(data['question'])
-
-    question_form = "<div class=\"panel panel-success\">
-      <div class=\"panel-heading\">
-        <h3 class=\"panel-title\">
-          #{question.title}
-        </h3>
-      </div>
-      <div class=\"panel-body\">
-        <div class=\"col-lg-11\">
-          #{question.body}
-        </div>
-        <div class=\"col-lg-1\">
-          <a href=\"/questions/#{question.id}\">Read</a>
-        </div>
-      </div>
-    </div>"
-
-    $('.questions').append(question_form)
+    $('.questions').append(JST["templates/question"]({question: question}))
 
   #render new comments via comet
   question_id = $('.question').data('questionId')
