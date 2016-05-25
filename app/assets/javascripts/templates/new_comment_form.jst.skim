@@ -1,5 +1,5 @@
 .comment-errors
-form.new_comment#new_comment action="/#{ @commentable_type }/#{ @commentable_id }/create_comment" accept-charset="UTF-8" data-remote="true" method="post"
+form.new_comment#new_comment action="/#{ @commentable_type }/#{ @commentable_id }/comments" accept-charset="UTF-8" data-remote="true" method="post"
   input name="utf8" type="hidden" value="✓"
   .form-group
     label for="comment_body" Comment

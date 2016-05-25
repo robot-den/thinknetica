@@ -7,18 +7,15 @@ Rails.application.routes.draw do
     end
   end
 
-  concern :commentable do
-    member do
-      post :create_comment
-    end
-  end
-
   devise_for :users
 
   root to: "questions#index"
 
-  resources :questions, except: :edit, concerns: [:votable, :commentable] do
-    resources :answers, only: [:create, :update, :destroy], shallow: true, concerns: [:votable, :commentable]
+  resources :questions, except: :edit, concerns: :votable do
+    resources :answers, only: [:create, :update, :destroy], shallow: true, concerns: :votable do
+      resources :comments, only: [:create]
+    end
+    resources :comments, only: [:create]
   end
 
   resources :attachments, only: :destroy
