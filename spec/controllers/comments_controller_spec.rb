@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
 
+  # пытался оставить этот спек в consern'ах, но запросы не проходят (:type => :request не очень помогло)
   let(:commentable) { create(:question) }
 
   describe 'POST #create_comment' do

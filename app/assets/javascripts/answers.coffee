@@ -22,16 +22,3 @@ $ ->
       $('#answer-' + response.id + ' .rating a.vote-cancel-link').hide()
       $('#answer-' + response.id + ' .rating a.vote-up-link').show()
       $('#answer-' + response.id + ' .rating a.vote-down-link').show()
-
-  #render new answers via comet
-  question_id = $('.answers').data('questionId')
-  PrivatePub.subscribe '/questions/' + question_id + '/answers', (data, channel) ->
-    answer = $.parseJSON(data['answer'])
-    $('.answers').append(JST["templates/answer"]({answer: answer}))
-
-  #show form for new comment
-  $('.answers .comments').on 'click', '.add-comment-link', (e) ->
-    e.preventDefault();
-    answer_id = $(this).closest('.answer').data('answerId')
-    $(this).hide();
-    $(this).closest('.comments').append(JST["templates/new_comment_form"]({commentable_type: 'answers', commentable_id: answer_id}));

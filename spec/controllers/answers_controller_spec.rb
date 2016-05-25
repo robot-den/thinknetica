@@ -16,9 +16,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { create_answer }.to change(question.answers, :count).by(1)
       end
 
-      it "render nothing" do
+      it "render create.js view" do
         create_answer
-        expect(response.body).to eq ''
+        expect(response).to render_template :create
       end
     end
 

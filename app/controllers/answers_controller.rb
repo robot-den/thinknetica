@@ -7,10 +7,7 @@ class AnswersController < ApplicationController
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge({user_id: current_user.id}))
-    if @answer.save
-      PrivatePub.publish_to "/questions/#{@question.id}/answers", answer: @answer.to_json
-      render nothing: true
-    end
+    @answer.save
   end
 
   def update

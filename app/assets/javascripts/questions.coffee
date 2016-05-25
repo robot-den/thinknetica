@@ -8,13 +8,6 @@ $ ->
     $(this).hide();
     $('.edit_question').show();
 
-  #show form for new comment
-  $('.question .comments').on 'click', '.add-comment-link', (e) ->
-    e.preventDefault();
-    question_id = $('.question').data('questionId')
-    $(this).hide();
-    $(this).closest('.comments').append(JST["templates/new_comment_form"]({commentable_type: 'questions', commentable_id: question_id}));
-
   #toggle vote links
   $('.question .rating a').bind 'ajax:success', (e, data, status, xhr) ->
     response = $.parseJSON(xhr.responseText)
@@ -32,15 +25,3 @@ $ ->
   PrivatePub.subscribe '/questions', (data, channel) ->
     question = $.parseJSON(data['question'])
     $('.questions').append(JST["templates/question"]({question: question}))
-
-  #render new comments via comet
-  question_id = $('.question').data('questionId')
-  PrivatePub.subscribe "/questions/#{question_id}/comments", (data, channel) ->
-    comment = $.parseJSON(data['comment'])
-    commentable_type = data['commentable_type']
-    commentable_id = data['commentable_id']
-    comment_form = "<p>#{comment.body}</p>"
-    if commentable_type == 'Question'
-      $('.question .comments').append(comment_form)
-    else if commentable_type == 'Answer'
-      $("#answer-#{commentable_id} .comments").append(comment_form)
