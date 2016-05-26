@@ -22,3 +22,10 @@ $ ->
       $('#answer-' + response.id + ' .rating a.vote-cancel-link').hide()
       $('#answer-' + response.id + ' .rating a.vote-up-link').show()
       $('#answer-' + response.id + ' .rating a.vote-down-link').show()
+
+  question_id = $('.answers').data('questionId')
+  PrivatePub.subscribe '/questions/' + question_id + '/answers', (data, channel) ->
+    answer = $.parseJSON(data['answer'])
+    attachments = $.parseJSON(data['attachments'])
+    question_author_id = (data['current_user_id'])
+    $('.answers').append(JST["templates/answer"]({answer: answer, attachments: attachments, question_author_id: question_author_id }))
