@@ -13,9 +13,13 @@ Rails.application.routes.draw do
 
   resources :questions, except: :edit, concerns: :votable do
     resources :answers, only: [:create, :update, :destroy], shallow: true, concerns: :votable do
-      resources :comments, only: [:create]
+      member do
+        resources :comments, only: [:create], defaults: {commentable: 'answers'}
+      end
     end
-    resources :comments, only: [:create]
+    member do
+      resources :comments, only: [:create], defaults: {commentable: 'questions'}
+    end
   end
 
   resources :attachments, only: :destroy

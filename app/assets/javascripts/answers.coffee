@@ -7,7 +7,6 @@ $ ->
     e.preventDefault();
     answer_id = $(this).data('answerId')
     $(this).hide();
-    console.log()
     $("#answer-#{answer_id} .answers-links").append(JST["templates/edit_answer_form"]({answer_id: answer_id}))
 
   #toggle links for votes
