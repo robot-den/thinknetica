@@ -1,13 +1,16 @@
 class AnswersController < ApplicationController
   include Voted
-  
+
   before_action :authenticate_user!
   before_action :get_answer, only: [:update, :destroy, :set_as_best]
 
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge({user_id: current_user.id}))
-    @answer.save
+    if @answer.save
+      PrivatePub.publish_to "/questions/#{ @question.id }/answers", answer: @answer.to_json, attachments: answer_attachments(@answer), question_author_id: @question.user_id
+      render nothing: true
+    end
   end
 
   def update
@@ -27,6 +30,14 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def answer_attachments(answer)
+    arr = []
+    answer.attachments.each_with_index do |attachment, i|
+      arr[i] = {name: attachment.file.identifier, url: attachment.file.url, id: attachment.id}
+    end
+    arr.to_json
+  end
 
   def get_answer
     @answer = Answer.find(params[:id])

@@ -2,11 +2,13 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
+  #edit question on show page
   $('.question').on 'click', '.edit-question-link', (e) ->
     e.preventDefault();
     $(this).hide();
     $('.edit_question').show();
 
+  #toggle vote links
   $('.question .rating a').bind 'ajax:success', (e, data, status, xhr) ->
     response = $.parseJSON(xhr.responseText)
     $('.question .rating-value').html(response.rating)
@@ -18,3 +20,8 @@ $ ->
       $('.question .rating a.vote-cancel-link').hide()
       $('.question .rating a.vote-up-link').show()
       $('.question .rating a.vote-down-link').show()
+
+  #render new question via comet
+  PrivatePub.subscribe '/questions', (data, channel) ->
+    question = $.parseJSON(data['question'])
+    $('.questions').append(JST["templates/question"]({question: question}))

@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   include Voted
-  
+
   before_action :authenticate_user!, except: [:index, :show]
   before_action :get_question, only: [:show, :edit, :update, :destroy]
 
@@ -23,6 +23,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(questions_params.merge({user_id: current_user.id}))
     if @question.save
       flash[:notice] = "Your question created successfully"
+      PrivatePub.publish_to "/questions", question: @question.to_json
       redirect_to @question
     else
       render :new

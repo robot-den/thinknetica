@@ -14,6 +14,7 @@ RSpec.describe Answer, type: :model do
   end
 
   it_behaves_like 'votable'
+  it_behaves_like 'commentable'
 
   describe '#set_as_best method' do
     it 'set only one answer of question as best' do

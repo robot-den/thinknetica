@@ -14,6 +14,10 @@ gem 'bootstrap-sass', '~> 3.3.6'
 gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
+gem 'private_pub'
+gem 'thin'
+gem 'skim'
+gem 'gon'
 
 group :development, :test do
   gem 'byebug'

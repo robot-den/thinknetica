@@ -28,3 +28,7 @@
           = f.label :body, 'Edit body'
           = f.text_area :body, class: 'form-control'
         = f.submit 'Save', class: 'btn btn-default'
+  - if user_signed_in?
+    .panel-footer.comments
+      = link_to 'add comment', '#', class: 'add-comment-link'
+      = render @question.comments

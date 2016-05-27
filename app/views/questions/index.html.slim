@@ -1,6 +1,6 @@
 .container-fluid
   .row
-    .col-lg-8
+    .col-lg-8.questions
       - @questions.each do |question|
         .panel.panel-success
           .panel-heading
@@ -12,3 +12,5 @@
             .col-lg-1
               = link_to 'Read', question_path(question)
     .col-lg-4
+
+= subscribe_to "/questions"

@@ -1,0 +1,7 @@
+.comment-errors
+form.new_comment#new_comment action="/#{ @commentable_type }/#{ @commentable_id }/comments" accept-charset="UTF-8" data-params="id=#{ @commentable_id }" data-remote="true" method="post"
+  input name="utf8" type="hidden" value="✓"
+  .form-group
+    label for="comment_body" Comment
+    textarea.form-control#comment_body name="comment[body]"
+  input.btn.btn-default type="submit" name="commit" value="Send"

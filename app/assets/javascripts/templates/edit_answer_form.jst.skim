@@ -1,0 +1,7 @@
+form.edit_answer accept-charset="UTF-8" method="post" action="/answers/#{ @answer_id }" style="display: block;" data-remote="true"
+  input type="hidden" name="utf8" value="✓"
+  input type="hidden" name="_method" value="patch"
+  .form-group
+    label for="answer_body" value="Answer"
+    textarea.form-control#answer_body name="answer[body]"
+  input.btn.btn-default type="submit" name="commit" value="Save"

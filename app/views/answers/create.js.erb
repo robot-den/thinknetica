@@ -2,6 +2,4 @@
   <% @answer.errors.full_messages.each do |message| %>
     $('.answers-errors').append("<%= j message %>")
   <% end %>
-<% else %>
-  $('.answers').append("<%= j render partial: 'answer', locals: {answer: @answer} %>")
 <% end %>
