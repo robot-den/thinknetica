@@ -18,6 +18,7 @@ gem 'private_pub'
 gem 'thin'
 gem 'skim'
 gem 'gon'
+gem 'responders'
 
 group :development, :test do
   gem 'byebug'
