@@ -3,33 +3,44 @@ class AnswersController < ApplicationController
 
   before_action :authenticate_user!
   before_action :get_answer, only: [:update, :destroy, :set_as_best]
+  before_action :get_question, only: :create
+  after_action :publish_answer, only: :create
+
+  respond_to :js
 
   def create
-    @question = Question.find(params[:question_id])
-    @answer = @question.answers.new(answer_params.merge({user_id: current_user.id}))
-    if @answer.save
-      PrivatePub.publish_to "/questions/#{ @question.id }/answers", answer: @answer.to_json, attachments: answer_attachments(@answer), question_author_id: @question.user_id
-      render nothing: true
-    end
+    respond_with(@answer = @question.answers.create(answer_params.merge({user_id: current_user.id})))
   end
 
   def update
     @answer.update(answer_params) if current_user.id == @answer.user_id
+    respond_with @answer
   end
 
   def destroy
     @answer.destroy if current_user.id == @answer.user_id
+    respond_with @answer
   end
 
+  # def set_as_best
+  #   question = @answer.question
+  #   if current_user.id == question.user_id
+  #     @answer.set_as_best
+  #     @answers = question.answers.order("best DESC, created_at DESC")
+  #   end
+  # end
+
   def set_as_best
-    question = @answer.question
-    if current_user.id == question.user_id
-      @answer.set_as_best
-      @answers = question.answers.order("best DESC, created_at DESC")
-    end
+    @answer.set_as_best if current_user.id == @answer.question.user_id
+    @answers = @answer.question.answers.order("best DESC, created_at DESC") if @answer.best?
+    respond_with @answer
   end
 
   private
+
+  def publish_answer
+    PrivatePub.publish_to "/questions/#{ @question.id }/answers", answer: @answer.to_json, attachments: answer_attachments(@answer), question_author_id: @question.user_id if @answer.persisted?
+  end
 
   def answer_attachments(answer)
     arr = []
@@ -37,6 +48,10 @@ class AnswersController < ApplicationController
       arr[i] = {name: attachment.file.identifier, url: attachment.file.url, id: attachment.id}
     end
     arr.to_json
+  end
+
+  def get_question
+    @question = Question.find(params[:question_id])
   end
 
   def get_answer
