@@ -1,6 +1,6 @@
 class AttachmentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :get_attachment, only: :destroy
+  before_action :load_attachment, only: :destroy
 
   respond_to :js
 
@@ -11,8 +11,7 @@ class AttachmentsController < ApplicationController
 
   private
 
-  def get_attachment
+  def load_attachment
     @attachment = Attachment.find(params[:id])
   end
-
 end

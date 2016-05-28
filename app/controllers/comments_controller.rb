@@ -1,12 +1,12 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :get_commentable, only: :create
+  before_action :load_commentable, only: :create
   after_action :publish_comment, only: :create
 
   respond_to :js
 
   def create
-    respond_with(@comment = @commentable.comments.create(comment_params.merge({user_id: current_user.id})))
+    respond_with(@comment = @commentable.comments.create(comment_params.merge(user_id: current_user.id)))
   end
 
   private
@@ -20,7 +20,7 @@ class CommentsController < ApplicationController
     end
   end
 
-  def get_commentable
+  def load_commentable
     @commentable = commentable_name.classify.constantize.find(params[:id])
   end
 
@@ -31,5 +31,4 @@ class CommentsController < ApplicationController
   def comment_params
     params.require(:comment).permit(:body)
   end
-
 end

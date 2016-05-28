@@ -1,4 +1,4 @@
-require "application_responder"
+require 'application_responder'
 
 class ApplicationController < ActionController::Base
   self.responder = ApplicationResponder
@@ -15,5 +15,4 @@ class ApplicationController < ActionController::Base
     gon.user_signed_in = user_signed_in?
     gon.current_user_id = current_user.id if user_signed_in?
   end
-
 end

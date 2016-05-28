@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :get_question, only: [:show, :edit, :update, :destroy]
+  before_action :load_question, only: [:show, :edit, :update, :destroy]
   before_action :new_answer, only: :show
   after_action :publish_question, only: :create
 
@@ -13,7 +13,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answers = @question.answers.order("best DESC, created_at DESC")
+    @answers = @question.answers.order('best DESC, created_at DESC')
     respond_with @question
   end
 
@@ -22,7 +22,7 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    respond_with(@question = Question.create(questions_params.merge({user_id: current_user.id})))
+    respond_with(@question = Question.create(questions_params.merge(user_id: current_user.id)))
   end
 
   def update
@@ -38,14 +38,14 @@ class QuestionsController < ApplicationController
   private
 
   def publish_question
-    PrivatePub.publish_to "/questions", question: @question.to_json if @question.persisted?
+    PrivatePub.publish_to '/questions', question: @question.to_json if @question.persisted?
   end
 
   def new_answer
     @answer = Answer.new
   end
 
-  def get_question
+  def load_question
     @question = Question.find(params[:id])
   end
 
