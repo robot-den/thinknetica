@@ -18,7 +18,7 @@ feature 'User can delete his question', %q{
 
     click_on 'Delete Question'
 
-    expect(page).to have_content 'Your question deleted successfully'
+    expect(page).to have_content 'Question was successfully destroyed'
   end
 
   scenario "authenticated user deletes another's question" do

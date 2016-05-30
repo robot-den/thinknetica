@@ -2,52 +2,50 @@ class QuestionsController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :get_question, only: [:show, :edit, :update, :destroy]
+  before_action :load_question, only: [:show, :edit, :update, :destroy]
+  before_action :new_answer, only: :show
+  after_action :publish_question, only: :create
+
+  respond_to :js, only: :update
 
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = Answer.new
-    @answer.attachments.build
-    @answers = @question.answers.order("best DESC, created_at DESC")
+    @answers = @question.answers.order('best DESC, created_at DESC')
+    respond_with @question
   end
 
   def new
-    @question = Question.new
-    @question.attachments.build
+    respond_with(@question = Question.new)
   end
 
   def create
-    @question = Question.new(questions_params.merge({user_id: current_user.id}))
-    if @question.save
-      flash[:notice] = "Your question created successfully"
-      PrivatePub.publish_to "/questions", question: @question.to_json
-      redirect_to @question
-    else
-      render :new
-    end
+    respond_with(@question = Question.create(questions_params.merge(user_id: current_user.id)))
   end
 
   def update
     @question.update(questions_params) if current_user.id == @question.user_id
+    respond_with @question
   end
 
   def destroy
-    if current_user.id == @question.user_id
-      @question.destroy
-      flash[:notice] = "Your question deleted successfully"
-      redirect_to questions_url
-    else
-      flash[:notice] = "You can't delete that question"
-      redirect_to question_path(@question)
-    end
+    @question.destroy if current_user.id == @question.user_id
+    respond_with @question
   end
 
   private
 
-  def get_question
+  def publish_question
+    PrivatePub.publish_to '/questions', question: @question.to_json if @question.persisted?
+  end
+
+  def new_answer
+    @answer = Answer.new
+  end
+
+  def load_question
     @question = Question.find(params[:id])
   end
 

@@ -1,4 +1,4 @@
-<% if @answers.present? %>
+<% if @answer.best? %>
   $('.answers').html("<%= j render @answers %>");
   console.log("ok");
 <% else %>

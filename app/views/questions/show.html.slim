@@ -15,7 +15,7 @@
             = f.label :body, 'Answer'
             = f.text_area :body, class: 'form-control'
           .form-group
-            = f.fields_for :attachments do |attachment|
+            = f.fields_for :attachments, @answer.attachments.build do |attachment|
               = render 'attachments/fields', f: attachment
             .links
               = link_to_add_association 'add file', f, :attachments, partial: 'attachments/fields'
