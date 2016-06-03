@@ -21,6 +21,7 @@ gem 'gon'
 gem 'responders'
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 group :development, :test do
   gem 'byebug'
@@ -30,6 +31,7 @@ group :development, :test do
   gem 'capybara'
   gem 'launchy'
   gem 'capybara-webkit'
+  gem 'capybara-email'
   gem 'database_cleaner'
 end
 
@@ -40,4 +42,5 @@ end
 group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'
+  gem 'letter_opener'
 end
