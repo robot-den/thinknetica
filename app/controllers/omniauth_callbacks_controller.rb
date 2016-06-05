@@ -23,8 +23,4 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       set_flash_message(:notice, :success, kind: authorization.provider) if is_navigational_format?
     end
   end
-
-  def need_confirm?
-
-  end
 end

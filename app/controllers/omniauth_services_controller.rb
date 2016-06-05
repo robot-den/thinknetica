@@ -4,7 +4,7 @@ class OmniauthServicesController < ApplicationController
 
   def save_email_for_oauth
     email = params[:email]
-    unless email.blank?
+    if !email.blank?
       auth = { provider: session[:provider], uid: session[:uid], info: { email: email } }
       authorization = User.find_or_create_authorization(auth)
       OAuthMailer.email_confirmation(authorization).deliver_later

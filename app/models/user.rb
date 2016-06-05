@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
     email = auth[:info][:email]
     return nil if email.nil?
     user = User.find_by(email: email)
-    unless user
+    if !user
       password = Devise.friendly_token[0, 20]
       user = User.create!(email: email, password: password, password_confirmation: password)
     end
