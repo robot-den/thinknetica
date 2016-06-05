@@ -11,16 +11,17 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, omniauth_providers: [:facebook, :twitter]
 
   def self.find_or_create_authorization(auth)
-    authorization = Authorization.find_by(provider: auth.provider, uid: auth.uid.to_s)
+    provider = auth[:provider]
+    uid = auth[:uid].to_s
+    authorization = Authorization.find_by(provider: provider, uid: uid)
     return authorization if authorization
-    email = auth.info[:email]
+    email = auth[:info][:email]
     return nil if email.nil?
     user = User.find_by(email: email)
     unless user
       password = Devise.friendly_token[0, 20]
       user = User.create!(email: email, password: password, password_confirmation: password)
     end
-    hash = Devise.friendly_token[0, 20]
-    user.authorizations.create!(provider: auth.provider, uid: auth.uid.to_s, confirmation_hash: hash)
+    user.authorizations.create!(provider: provider, uid: uid, confirmation_hash: Devise.friendly_token[0, 20])
   end
 end

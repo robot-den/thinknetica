@@ -10,15 +10,15 @@ RSpec.describe OmniauthServicesController, type: :controller do
 
   describe 'post #save_email_for_oauth' do
     context 'with valid attributes' do
+      let(:save_email_for_oauth) { post :save_email_for_oauth, {email: 'test@test.com'}, {uid: '12345', provider: 'twitter'} }
 
-      pending 'how to set session parameters?'
       it 'redirect to sign in page' do
-        # post :save_email_for_oauth, email: 'test@test.com'
-        # expect(response).to redirect_to new_user_session_path
+        save_email_for_oauth
+        expect(response).to redirect_to new_user_session_path
       end
 
       it 'sends an email' do
-        # expect { post :save_email_for_oauth, email: 'test@test.com' }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        expect { save_email_for_oauth }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
     end
 
@@ -34,7 +34,7 @@ RSpec.describe OmniauthServicesController, type: :controller do
     context 'with valid attributes' do
       let!(:auth) { create(:authorization) }
       let!(:old_hash) { auth.confirmation_hash }
-      before { get :confirm_email, provider: auth.provider, uid: auth.uid, token: auth.confirmation_hash }
+      before { get :confirm_email, token: auth.confirmation_hash }
 
       it 'set authorization confirmed status true' do
         auth.reload
