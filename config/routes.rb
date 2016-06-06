@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 
   root to: "questions#index"
 
@@ -25,4 +25,8 @@ Rails.application.routes.draw do
   resources :attachments, only: :destroy
 
   patch "/answers/set_as_best/:id", to: 'answers#set_as_best', as: 'set_best_answer'
+
+  get "/omniauth_services/new_email_for_oauth", as: 'new_email_for_oauth'
+  post "/omniauth_services/save_email_for_oauth", as: 'save_email_for_oauth'
+  get "/omniauth_services/confirm_email", as: 'confirm_email'
 end

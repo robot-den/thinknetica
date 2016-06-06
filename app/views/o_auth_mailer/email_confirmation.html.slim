@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type"
+  body
+    h1 Hello! This is confirmation mail!
+    p
+      | Someone try to login on qna with that email!
+      | And now need to confirm it!
+      br
+    p
+      | If it was you, just follow this link:
+      = link_to 'Confirm my email', @url
+    p Thanks for joining and have a great day!
