@@ -18,6 +18,7 @@ describe Ability do
     let(:user_answer) { create :answer, user: user }
     let(:answer_of_users_question) { create :answer, question: user_question }
 
+
     it { should_not be_able_to :manage, :all }
 
     context 'question' do
@@ -52,6 +53,14 @@ describe Ability do
       it { should_not be_able_to :destroy, answer, user: user }
       it { should_not be_able_to :manage, :all }
       it { should_not be_able_to :set_as_best, answer }
+    end
+
+    context 'attachments' do
+      let(:attachment) { create(:attachment, attachable: answer) }
+      let(:user_attachment) { create(:attachment, attachable: user_answer) }
+
+      it { should be_able_to :destroy, user_attachment, attachable: { user: user }  }
+      it { should_not be_able_to :destroy, attachment, attachable: { user: user }  }
     end
   end
 end

@@ -5,7 +5,8 @@ class AttachmentsController < ApplicationController
   respond_to :js
 
   def destroy
-    @attachment.destroy if current_user.id == @attachment.attachable.user_id
+    authorize! :destroy, @attachment
+    @attachment.destroy
     respond_with @attachment
   end
 

@@ -15,17 +15,17 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params) if current_user.id == @answer.user_id
+    @answer.update(answer_params)
     respond_with @answer
   end
 
   def destroy
-    @answer.destroy if current_user.id == @answer.user_id
+    @answer.destroy
     respond_with @answer
   end
 
   def set_as_best
-    @answer.set_as_best if current_user.id == @answer.question.user_id
+    @answer.set_as_best
     @answers = @answer.question.answers.order('best DESC, created_at DESC') if @answer.best?
     respond_with @answer
   end

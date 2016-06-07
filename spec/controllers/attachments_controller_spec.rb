@@ -29,9 +29,9 @@ RSpec.describe AttachmentsController, type: :controller do
         expect { destroy_attachment }.to_not change(Attachment, :count)
       end
 
-      it 'render destroy.js view' do
+      it 'redirect to root_url' do
         destroy_attachment
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_url
       end
     end
   end

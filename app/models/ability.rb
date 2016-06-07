@@ -29,6 +29,9 @@ class Ability
       cannot :vote_down, Answer, user: user
       cannot :vote_cancel, Answer, user: user
 
+      #Attachment
+      can :destroy, Attachment, attachable: { user: user }
+
 
     else
       can :read, Question
