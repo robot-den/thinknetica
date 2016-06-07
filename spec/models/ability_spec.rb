@@ -62,5 +62,9 @@ describe Ability do
       it { should be_able_to :destroy, user_attachment, attachable: { user: user }  }
       it { should_not be_able_to :destroy, attachment, attachable: { user: user }  }
     end
+
+    context 'comments' do
+      it { should be_able_to :create, Comment }
+    end
   end
 end

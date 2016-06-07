@@ -32,6 +32,9 @@ class Ability
       #Attachment
       can :destroy, Attachment, attachable: { user: user }
 
+      #Comment
+      can :create, Comment
+
 
     else
       can :read, Question
