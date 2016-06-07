@@ -8,6 +8,8 @@ class AnswersController < ApplicationController
 
   respond_to :js
 
+  authorize_resource
+
   def create
     respond_with(@answer = @question.answers.create(answer_params.merge(user_id: current_user.id)))
   end
@@ -21,14 +23,6 @@ class AnswersController < ApplicationController
     @answer.destroy if current_user.id == @answer.user_id
     respond_with @answer
   end
-
-  # def set_as_best
-  #   question = @answer.question
-  #   if current_user.id == question.user_id
-  #     @answer.set_as_best
-  #     @answers = question.answers.order("best DESC, created_at DESC")
-  #   end
-  # end
 
   def set_as_best
     @answer.set_as_best if current_user.id == @answer.question.user_id
