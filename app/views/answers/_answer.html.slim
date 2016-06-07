@@ -6,21 +6,21 @@ div class="answer" id="answer-#{ answer.id }" data={answer_id: "#{answer.id}"}
         p
         | Attachments:
         ul
-          = render partial: 'attachments/attachment', collection: answer.attachments, locals: { author_id: answer.user_id }
+          = render partial: 'attachments/attachment', collection: answer.attachments
       .col-lg-2
         - # FIXME N+1 query
-        - if user_signed_in? && answer.question.user_id == current_user.id && !answer.best?
+        - if can?(:set_as_best, answer) && !answer.best?
             = link_to 'Mark as best', set_best_answer_path(answer), method: :patch, remote: true
-        - if answer.best?
+        - elsif answer.best?
             | Best answer
 
       .panel-footer.answers-links
         = render partial: 'votes/vote', locals: { votable: answer }
-        - if user_signed_in? && current_user.id == answer.user_id
+        - if can?(:update, answer)
           = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
           |   |
           = link_to 'Delete my answer', answer_path(answer), method: :delete, remote: true
-      - if user_signed_in?
+      - if can?(:create, Comment)
         .panel-footer.comments
           = link_to 'add comment', '#', class: 'add-comment-link'
           = render answer.comments

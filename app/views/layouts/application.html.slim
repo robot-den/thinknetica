@@ -16,7 +16,7 @@ html
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav
             li
-              - if user_signed_in?
+              - if can?(:create, Question)
                 = link_to 'Ask question', new_question_path
             li
               a href="#"  Link
