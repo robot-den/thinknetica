@@ -14,10 +14,6 @@ describe Ability do
     let(:user) { create :user }
     let(:question) { create :question }
     let(:user_question) { create :question, user: user }
-    let(:answer) { create :answer }
-    let(:user_answer) { create :answer, user: user }
-    let(:answer_of_users_question) { create :answer, question: user_question }
-
 
     it { should_not be_able_to :manage, :all }
 
@@ -38,6 +34,10 @@ describe Ability do
     end
 
     context 'answer' do
+      let(:answer) { create :answer }
+      let(:user_answer) { create :answer, user: user }
+      let(:answer_of_users_question) { create :answer, question: user_question }
+
       it { should be_able_to :create, Answer }
       it { should be_able_to :update, user_answer, user: user }
       it { should be_able_to :destroy, user_answer, user: user }
@@ -56,8 +56,8 @@ describe Ability do
     end
 
     context 'attachments' do
-      let(:attachment) { create(:attachment, attachable: answer) }
-      let(:user_attachment) { create(:attachment, attachable: user_answer) }
+      let(:attachment) { create(:attachment, attachable: question) }
+      let(:user_attachment) { create(:attachment, attachable: user_question) }
 
       it { should be_able_to :destroy, user_attachment, attachable: { user: user }  }
       it { should_not be_able_to :destroy, attachment, attachable: { user: user }  }
