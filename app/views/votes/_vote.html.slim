@@ -1,5 +1,5 @@
 .rating
-  - if user_signed_in? && votable.user_id != current_user.id
+  - if can?(:vote, votable)
     - if votable.votes.exists?(user: current_user)
       = link_to 'cancel', polymorphic_path(votable, action: :vote_cancel), method: :post, remote: true, class: 'vote-cancel-link'
       = link_to 'up', polymorphic_path(votable, action: :vote_up), method: :post, remote: true, class: 'vote-up-link', style: "display:none;"

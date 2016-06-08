@@ -94,8 +94,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to_not eq '12345678910'
       end
 
-      it "render update.js view" do
-        expect(response).to render_template :update
+      it "redirect to root page" do
+        expect(response).to redirect_to root_url
       end
     end
 
@@ -161,8 +161,8 @@ RSpec.describe QuestionsController, type: :controller do
 
       it "redirects to show view with notice" do
         delete_question
-        expect(response).to redirect_to question_path(question)
-        expect(flash[:notice]).to be_present
+        expect(response).to redirect_to root_url
+        expect(flash[:alert]).to be_present
       end
     end
   end

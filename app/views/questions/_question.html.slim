@@ -12,9 +12,9 @@
     p
     | Attachments:
     ul
-    = render partial: 'attachments/attachment', collection: @question.attachments, locals: { author_id: @question.user_id }
+    = render partial: 'attachments/attachment', collection: @question.attachments
 
-  - if user_signed_in? && current_user.id == @question.user_id
+  - if can?(:update, @question)
     .panel-footer
       = link_to 'Edit question', '', class: 'edit-question-link'
       |   |
@@ -28,7 +28,7 @@
           = f.label :body, 'Edit body'
           = f.text_area :body, class: 'form-control'
         = f.submit 'Save', class: 'btn btn-default'
-  - if user_signed_in?
+  - if can?(:create, Comment)
     .panel-footer.comments
       = link_to 'add comment', '#', class: 'add-comment-link'
       = render @question.comments

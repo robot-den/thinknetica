@@ -8,6 +8,8 @@ class QuestionsController < ApplicationController
 
   respond_to :js, only: :update
 
+  authorize_resource
+
   def index
     respond_with(@questions = Question.all)
   end
@@ -26,12 +28,12 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(questions_params) if current_user.id == @question.user_id
+    @question.update(questions_params)
     respond_with @question
   end
 
   def destroy
-    @question.destroy if current_user.id == @question.user_id
+    @question.destroy
     respond_with @question
   end
 

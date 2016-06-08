@@ -29,10 +29,9 @@ shared_examples 'voted' do
         expect(votable.votes.count).to eq 0
       end
 
-      it "render nothing with status 403" do
+      it "redirect to root url" do
         vote_up
-        expect(response.body).to eq ''
-        expect(response.status).to eq 403
+        expect(response).to redirect_to root_url
       end
     end
 
@@ -62,10 +61,9 @@ shared_examples 'voted' do
         expect(votable.votes.count).to eq 0
       end
 
-      it "render nothing with status 403" do
+      it "redirect to root url" do
         vote_down
-        expect(response.body).to eq ''
-        expect(response.status).to eq 403
+        expect(response).to redirect_to root_url
       end
     end
   end

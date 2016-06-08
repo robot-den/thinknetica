@@ -48,8 +48,8 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to_not eq '12345678910'
       end
 
-      it "render update.js view" do
-        expect(response).to render_template :update
+      it "redirect to root_url" do
+        expect(response).to redirect_to root_url
       end
     end
 
@@ -110,9 +110,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { destroy_answer }.to_not change(Question, :count)
       end
 
-      it "render update.js view" do
+      it "redirect to root_url" do
         destroy_answer
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_url
       end
     end
   end
@@ -150,8 +150,8 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.best?).to eq false
       end
 
-      it 'render set_as_best.js view' do
-        expect(response).to render_template :set_as_best
+      it 'redirect to root_url' do
+        expect(response).to redirect_to root_url
       end
     end
   end

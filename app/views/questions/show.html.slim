@@ -9,7 +9,7 @@
       .answers data={question_id: "#{@question.id}"}
         = render @answers
       hr
-      - if user_signed_in?
+      - if can?(:create, Answer)
         = form_for [@question, @answer], remote: true do |f|
           .form-group
             = f.label :body, 'Answer'
