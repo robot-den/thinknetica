@@ -8,7 +8,7 @@ class Ability
       can :read, Question
       can :create, [Question, Answer, Comment]
       can [:update, :destroy], [Question, Answer], user: user
-      can [:vote], [Question, Answer] { |votable| votable.user != user }
+      can [:vote], [Question, Answer] { |votable| votable.user_id != user.id }
       can :set_as_best, Answer, question: { user: user }
       can :destroy, Attachment, attachable: { user: user }
     else
