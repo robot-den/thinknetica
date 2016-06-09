@@ -23,6 +23,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'cancancan', '~> 1.10'
+gem 'doorkeeper'
 
 group :development, :test do
   gem 'byebug'
@@ -38,6 +39,7 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'json_spec'
 end
 
 group :development do
