@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Profile API' do
+describe 'Questions API' do
   describe 'GET #index' do
     context 'unauthorized' do
       it 'return status 401 if there is no access token' do
@@ -126,7 +126,6 @@ describe 'Profile API' do
       end
 
       it 'respond contains all answers of question' do
-        puts response.body
         expect(response.body).to have_json_size(2).at_path('answers')
       end
 

@@ -10,7 +10,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def answers
-    respond_with(@question.answers)
+    respond_with @question.answers, each_serializer: AnswerCollectionSerializer
   end
 
   private
