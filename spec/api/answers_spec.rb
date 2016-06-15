@@ -61,4 +61,67 @@ describe 'Answers API' do
       end
     end
   end
+
+  describe 'POST #create' do
+    context 'unauthorized' do
+      it 'return status 401 if there is no access token' do
+        post '/api/v1/questions/1/answers', format: :json
+        expect(response.status).to eq 401
+      end
+
+      it 'return status 401 if there is invalid access token' do
+        post '/api/v1/questions/1/answers', format: :json, access_token: '12345'
+        expect(response.status).to eq 401
+      end
+    end
+
+    context 'authorized' do
+      let(:user) { create(:user) }
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+      let!(:question) { create(:question) }
+      let(:answer) { Answer.last }
+
+      context 'with valid params' do
+
+        let(:create_answer) { post "/api/v1/questions/#{ question.id }/answers", format: :json, access_token: access_token.token, question_id: question.id, answer: { body: '12345678910' } }
+
+        it 'return status 201' do
+          create_answer
+          expect(response.status).to eq 201
+        end
+
+        pending 'Снова делать все проверки что вернулся ответ?'
+
+        it 'save new answer in database' do
+          expect { create_answer }.to change(Answer, :count).by(1)
+        end
+
+        it 'create answer with correct attributes' do
+          create_answer
+          expect(answer.body).to eq '12345678910'
+          expect(answer.user_id).to eq user.id
+          expect(answer.question_id).to eq question.id
+        end
+      end
+
+      context 'with invalid params' do
+
+        let(:create_answer) { post "/api/v1/questions/#{ question.id }/answers", format: :json, access_token: access_token.token, question_id: question.id, answer: { body: nil } }
+
+        it 'return status 422' do
+          create_answer
+          expect(response.status).to eq 422
+        end
+
+        it 'doesnt save new answer in database' do
+          expect { create_answer }.to_not change(Answer, :count)
+        end
+
+        it 'respond contain errors' do
+          create_answer
+          expect(response.body).to have_json_path('errors')
+        end
+      end
+    end
+  end
 end

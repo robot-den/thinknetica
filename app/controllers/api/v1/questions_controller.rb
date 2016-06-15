@@ -11,11 +11,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def create
     respond_with(@question = Question.create(questions_params.merge(user_id: current_resource_owner.id)))
-    # if @question.persisted?
-    #   render nothing: true
-    # else
-    #   respond_with @question.errors
-    # end
   end
 
   def answers
