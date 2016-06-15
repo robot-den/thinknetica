@@ -9,6 +9,15 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     respond_with @question
   end
 
+  def create
+    respond_with(@question = Question.create(questions_params.merge(user_id: current_resource_owner.id)))
+    # if @question.persisted?
+    #   render nothing: true
+    # else
+    #   respond_with @question.errors
+    # end
+  end
+
   def answers
     respond_with @question.answers, each_serializer: AnswerCollectionSerializer
   end
@@ -17,5 +26,9 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def load_question
     @question = Question.find(params[:id])
+  end
+
+  def questions_params
+    params.require(:question).permit(:title, :body)
   end
 end

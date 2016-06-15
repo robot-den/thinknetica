@@ -138,4 +138,66 @@ describe 'Questions API' do
       end
     end
   end
+
+  describe 'POST #create' do
+    context 'unauthorized' do
+      it 'return status 401 if there is no access token' do
+        post '/api/v1/questions', format: :json
+        expect(response.status).to eq 401
+      end
+
+      it 'return status 401 if there is invalid access token' do
+        post '/api/v1/questions', format: :json, access_token: '12345'
+        expect(response.status).to eq 401
+      end
+    end
+
+    context 'authorized' do
+      let(:user) { create(:user) }
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      context 'with valid params' do
+
+        let(:create_question) { post "/api/v1/questions", format: :json, access_token: access_token.token, question: { title: '12345678910', body: '12345678910' } }
+        let(:question) { Question.last }
+
+        it 'return status 201' do
+          create_question
+          expect(response.status).to eq 201
+        end
+
+        pending 'Снова делать все проверки что вернулся вопрос?'
+
+        it 'save new question in database' do
+          expect { create_question }.to change(Question, :count).by(1)
+        end
+
+        it 'create question with correct attributes' do
+          create_question
+          expect(question.body).to eq '12345678910'
+          expect(question.title).to eq '12345678910'
+          expect(question.user_id).to eq user.id
+        end
+      end
+
+      context 'with invalid params' do
+
+        let(:create_question) { post "/api/v1/questions", format: :json, access_token: access_token.token, question: { title: nil, body: nil } }
+
+        it 'return status 422' do
+          create_question
+          expect(response.status).to eq 422
+        end
+
+        it 'doesnt save new question in database' do
+          expect { create_question }.to_not change(Question, :count)
+        end
+
+        it 'respond contain errors' do
+          create_question
+          expect(response.body).to have_json_path('errors')
+        end
+      end
+    end
+  end
 end
