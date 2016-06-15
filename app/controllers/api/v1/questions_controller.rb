@@ -1,13 +1,16 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
-  before_action :load_question, only: :show
+  before_action :load_question, only: [:show, :answers]
 
   def index
-    @questions = Question.all
-    respond_with @questions, each_serializer: QuestionCollectionSerializer
+    respond_with Question.all, each_serializer: QuestionCollectionSerializer
   end
 
   def show
     respond_with @question
+  end
+
+  def answers
+    respond_with(@question.answers)
   end
 
   private
