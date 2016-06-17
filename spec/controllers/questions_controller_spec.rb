@@ -61,7 +61,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'sends message to channel after create question' do
-        expect(PrivatePub).to receive(:publish_to)
+        expect(PrivatePub).to receive(:publish_to).with('/questions', anything)
         create_question
       end
 

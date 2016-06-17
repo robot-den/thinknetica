@@ -2,9 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
 
-  # пытался оставить этот спек в consern'ах, использовал :type => :request но с ним не могу залогинить пользователя
-  # и если не указывать commentable: 'questions' в запросе, то в контроллере ошибка, наверное здесь мимо роутов обращение идет, и не подсовывается этот параметр в params
-  let(:commentable) { create(:question) }
+let(:commentable) { create(:question) }
 
   describe 'POST #create' do
     sign_in_user
@@ -17,7 +15,7 @@ RSpec.describe CommentsController, type: :controller do
       end
 
       it 'sends message to channel after create comment' do
-        expect(PrivatePub).to receive(:publish_to)
+        expect(PrivatePub).to receive(:publish_to).with("/questions/#{ commentable.id }/comments", anything)
         create_comment
       end
 
