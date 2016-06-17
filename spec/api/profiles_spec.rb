@@ -1,23 +1,13 @@
 require 'rails_helper'
 
 describe 'Profile API' do
-  describe 'GET /me' do
-    context 'unauthorized' do
-      it 'return status 401 if there is no access token' do
-        get '/api/v1/profiles/me', format: :json
-        expect(response.status).to eq 401
-      end
+  let(:me) { create(:user) }
+  let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
-      it 'return status 401 if there is invalid access token' do
-        get '/api/v1/profiles/me', format: :json, access_token: '12345'
-        expect(response.status).to eq 401
-      end
-    end
+  describe 'GET /me' do
+    it_behaves_like 'API authenticable'
 
     context 'authorized' do
-      let(:me) { create(:user) }
-      let(:access_token) { create(:access_token, resource_owner_id: me.id) }
-
       before { get '/api/v1/profiles/me', format: :json, access_token: access_token.token }
 
       it 'return status 200' do
@@ -36,25 +26,17 @@ describe 'Profile API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get '/api/v1/profiles/me', { format: :json }.merge(options)
+    end
   end
 
   describe 'GET /all' do
-    context 'unauthorized' do
-      it 'return status 401 if there is no access token' do
-        get '/api/v1/profiles/all', format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'return status 401 if there is invalid access token' do
-        get '/api/v1/profiles/all', format: :json, access_token: '12345'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API authenticable'
 
     context 'authorized' do
-      let(:me) { create(:user) }
       let!(:users) { create_list(:user, 3) }
-      let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
       before { get '/api/v1/profiles/all', format: :json, access_token: access_token.token }
 
@@ -89,6 +71,10 @@ describe 'Profile API' do
           end
         end
       end
+    end
+
+    def do_request(options = {})
+      get '/api/v1/profiles/all', { format: :json }.merge(options)
     end
   end
 end

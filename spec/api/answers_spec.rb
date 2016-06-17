@@ -2,22 +2,13 @@ require 'rails_helper'
 
 
 describe 'Answers API' do
-  describe 'GET #show' do
-    context 'unauthorized' do
-      it 'return status 401 if there is no access token' do
-        get '/api/v1/answers/1', format: :json
-        expect(response.status).to eq 401
-      end
+  let(:user) { create(:user) }
+  let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-      it 'return status 401 if there is invalid access token' do
-        get '/api/v1/answers/1', format: :json, access_token: '12345'
-        expect(response.status).to eq 401
-      end
-    end
+  describe 'GET #show' do
+    it_behaves_like 'API authenticable'
 
     context 'authorized' do
-      let(:user) { create(:user) }
-      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
       let!(:answer) { create(:answer, :with_attachment) }
       let!(:comment) { create(:comment, commentable: answer) }
       let(:attachment) { answer.attachments.first }
@@ -60,29 +51,20 @@ describe 'Answers API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get '/api/v1/answers/1', { format: :json }.merge(options)
+    end
   end
 
   describe 'POST #create' do
-    context 'unauthorized' do
-      it 'return status 401 if there is no access token' do
-        post '/api/v1/questions/1/answers', format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'return status 401 if there is invalid access token' do
-        post '/api/v1/questions/1/answers', format: :json, access_token: '12345'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API authenticable'
 
     context 'authorized' do
-      let(:user) { create(:user) }
-      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
       let!(:question) { create(:question) }
       let(:answer) { Answer.last }
 
       context 'with valid params' do
-
         let(:create_answer) { post "/api/v1/questions/#{ question.id }/answers", format: :json, access_token: access_token.token, question_id: question.id, answer: { body: '12345678910' } }
 
         it 'return status 201' do
@@ -90,10 +72,25 @@ describe 'Answers API' do
           expect(response.status).to eq 201
         end
 
-        pending 'Снова делать все проверки что вернулся ответ?'
-
         it 'save new answer in database' do
           expect { create_answer }.to change(Answer, :count).by(1)
+        end
+
+        %w{body id created_at updated_at}.each do |key|
+          it "respond for answer contains #{ key }" do
+            create_answer
+            expect(response.body).to be_json_eql(answer.send(key.to_sym).to_json).at_path("answer/#{ key }")
+          end
+        end
+
+        it 'answer contain no comments' do
+          create_answer
+          expect(response.body).to have_json_size(0).at_path('answer/comments')
+        end
+
+        it 'answer contain no attachments' do
+          create_answer
+          expect(response.body).to have_json_size(0).at_path('answer/attachments')
         end
 
         it 'create answer with correct attributes' do
@@ -105,7 +102,6 @@ describe 'Answers API' do
       end
 
       context 'with invalid params' do
-
         let(:create_answer) { post "/api/v1/questions/#{ question.id }/answers", format: :json, access_token: access_token.token, question_id: question.id, answer: { body: nil } }
 
         it 'return status 422' do
@@ -122,6 +118,10 @@ describe 'Answers API' do
           expect(response.body).to have_json_path('errors')
         end
       end
+    end
+
+    def do_request(options = {})
+      get '/api/v1/questions/1/answers', { format: :json }.merge(options)
     end
   end
 end
