@@ -6,7 +6,7 @@ RSpec.describe CommentsController, type: :controller do
   # и если не указывать commentable: 'questions' в запросе, то в контроллере ошибка, наверное здесь мимо роутов обращение идет, и не подсовывается этот параметр в params
   let(:commentable) { create(:question) }
 
-  describe 'POST #create_comment' do
+  describe 'POST #create' do
     sign_in_user
 
     context 'with valid attributes' do
@@ -14,6 +14,11 @@ RSpec.describe CommentsController, type: :controller do
 
       it 'create new comment for commentable' do
         expect { create_comment }.to change(commentable.comments, :count).by(1)
+      end
+
+      it 'sends message to channel after create comment' do
+        expect(PrivatePub).to receive(:publish_to)
+        create_comment
       end
 
       it 'render nothing' do
@@ -27,6 +32,11 @@ RSpec.describe CommentsController, type: :controller do
 
       it 'doesnt create new comment for commentable' do
         expect { create_invalid_comment }.to_not change(Comment, :count)
+      end
+
+      it 'does not sends message to channel' do
+        expect(PrivatePub).to_not receive(:publish_to)
+        create_invalid_comment
       end
 
       it 'render error view' do

@@ -16,6 +16,11 @@ RSpec.describe AnswersController, type: :controller do
         expect { create_answer }.to change(question.answers, :count).by(1)
       end
 
+      it 'sends message to channel after create answer' do
+        expect(PrivatePub).to receive(:publish_to)
+        create_answer
+      end
+
       it "render nothing" do
         create_answer
         expect(response.body).to eq ''
@@ -27,6 +32,11 @@ RSpec.describe AnswersController, type: :controller do
 
       it "does not save answer for question in database" do
         expect { create_invalid_answer }.to_not change(Answer, :count)
+      end
+
+      it 'does not sends message to channel' do
+        expect(PrivatePub).to_not receive(:publish_to)
+        create_invalid_answer
       end
 
       it "render create.js view" do
