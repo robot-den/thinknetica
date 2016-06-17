@@ -24,7 +24,7 @@ describe 'Profile API' do
         expect(response.status).to eq 200
       end
 
-      %w{email id created_at updated_at}.each do |key|
+      %w{email id created_at updated_at admin}.each do |key|
         it "respond contains #{key}" do
           expect(response.body).to be_json_eql(me.send(key.to_sym).to_json).at_path(key)
         end
@@ -74,7 +74,7 @@ describe 'Profile API' do
         expect(response.body).to have_json_size(3).at_path('/')
       end
 
-      %w{email id created_at updated_at}.each do |key|
+      %w{email id created_at updated_at admin}.each do |key|
         it "json for each user from list contains #{ key }" do
           users.each_with_index do |user, i|
             expect(response.body).to be_json_eql(user.send(key.to_sym).to_json).at_path("#{ i }/#{ key }")
