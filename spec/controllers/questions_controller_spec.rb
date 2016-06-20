@@ -60,6 +60,11 @@ RSpec.describe QuestionsController, type: :controller do
         expect { create_question }.to change(Question, :count).by(1)
       end
 
+      it 'sends message to channel after create question' do
+        expect(PrivatePub).to receive(:publish_to).with('/questions', anything)
+        create_question
+      end
+
       it "redirect to show view with notice" do
         create_question
         expect(response).to redirect_to question_path(assigns(:question))
@@ -72,6 +77,11 @@ RSpec.describe QuestionsController, type: :controller do
 
       it "does not save question in database" do
         expect { create_invalid_question }.to_not change(Question, :count)
+      end
+
+      it 'does not sends message to channel' do
+        expect(PrivatePub).to_not receive(:publish_to)
+        create_invalid_question
       end
 
       it "render edit view" do
