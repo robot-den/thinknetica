@@ -12,10 +12,18 @@ class Answer < ActiveRecord::Base
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
+  after_create :notify_subscribers
+
   def set_as_best
     transaction do
       Answer.where(question_id: self.question_id, best: true).update_all(best: false)
       self.update!(best: true)
     end
+  end
+
+  private
+
+  def notify_subscribers
+    QuestionNotificationJob.perform_later(self)
   end
 end

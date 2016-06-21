@@ -36,4 +36,11 @@ RSpec.describe Answer, type: :model do
       expect(answer4.best?).to eq false
     end
   end
+
+  describe '#notify_subscribers' do
+    it 'run notification job after creating answer' do
+      expect(QuestionNotificationJob).to receive(:perform_later)
+      create(:answer)
+    end
+  end
 end

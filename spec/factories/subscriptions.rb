@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :subscriptions do
-
+  factory :subscription do
+    user
   end
 end

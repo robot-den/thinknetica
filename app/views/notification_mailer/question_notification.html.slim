@@ -1,0 +1,10 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type"
+  body
+    h1 Hello! Question that you subscribe have new answers!
+    br
+    = link_to 'check', question_url(@question)
+    | You can unsubscribe on the question page
+    p Have a good day!

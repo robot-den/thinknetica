@@ -18,7 +18,8 @@ RSpec.describe OmniauthServicesController, type: :controller do
       end
 
       it 'sends an email' do
-        expect { save_email_for_oauth }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        expect(OAuthMailer).to receive(:email_confirmation).and_call_original
+        save_email_for_oauth
       end
     end
 
