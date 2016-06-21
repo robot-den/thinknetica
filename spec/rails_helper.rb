@@ -8,7 +8,7 @@ require 'rspec/rails'
 require 'cancan/matchers'
 require 'sidekiq/testing'
 
-Sidekiq::Testing.inline!
+Sidekiq::Testing.fake!
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

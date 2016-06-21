@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type"
+  body
+    h1 Hello! This is daily digest!
+    p Look at our new questions!
+    br
+  	- @questions.each do |question|
+      = question.title
+      br
+      = link_to 'read', question_url(question)
+    p Have a good day!

@@ -1,7 +1,7 @@
 class DailyDigestJob < ActiveJob::Base
-  queue_as :default
+  queue_as :mailers
 
-  def perform(*args)
-    # Do something later
+  def perform
+    User.find_each.each { |user| DailyDigestMailer.daily_digest(user).deliver_later }
   end
 end
