@@ -38,9 +38,11 @@ RSpec.describe Answer, type: :model do
   end
 
   describe '#notify_subscribers' do
+    let(:answer) { create(:answer) }
+
     it 'run notification job after creating answer' do
       expect(QuestionNotificationJob).to receive(:perform_later)
-      create(:answer)
+      answer.run_callbacks(:commit)
     end
   end
 end

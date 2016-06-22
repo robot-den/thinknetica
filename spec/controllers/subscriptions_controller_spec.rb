@@ -56,9 +56,9 @@ RSpec.describe SubscriptionsController, type: :controller do
         expect { destroy_subscription }.to_not change(Subscription, :count)
       end
 
-      it "render destroy.js view" do
+      it "redirect to root path (cancan)" do
         destroy_subscription
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
   end

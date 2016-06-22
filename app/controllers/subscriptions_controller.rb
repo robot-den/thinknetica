@@ -6,11 +6,13 @@ class SubscriptionsController < ApplicationController
   respond_to :js
 
   def create
+    authorize! :create, Subscription
     respond_with(@subscription = @subscriptable.subscriptions.create!(user: current_user))
   end
 
   def destroy
-    @subscription.destroy if @subscription
+    authorize! :destroy, @subscription
+    @subscription.destroy
     respond_with @subscription
   end
 
