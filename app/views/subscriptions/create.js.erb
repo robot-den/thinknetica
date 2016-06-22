@@ -1,0 +1,5 @@
+<% if @subscription.errors.present? %>
+  console.log('Subscribe create error')
+<% else %>
+  $('.subscription').html("<%= j render partial: 'subscriptions/link', locals: { subscriptable: @subscription.subscriptable } %>");
+<% end %>

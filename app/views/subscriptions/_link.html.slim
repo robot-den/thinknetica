@@ -1,0 +1,4 @@
+- if subscriptable.subscriptions.exists?(user: current_user)
+  = link_to 'unsubscribe', subscriptions_path(subscriptable), method: :delete, remote: true
+- else
+  = link_to 'subscribe', subscriptions_path(subscriptable), method: :post, remote: true

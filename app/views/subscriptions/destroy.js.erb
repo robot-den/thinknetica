@@ -1,0 +1,5 @@
+<% if @subscription && @subscription.destroyed? %>
+  $('.subscription').html("<%= j render partial: 'subscriptions/link', locals: { subscriptable: @subscription.subscriptable } %>");
+<% else %>
+  console.log('Subscribe destroy error')
+<% end %>

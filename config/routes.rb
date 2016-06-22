@@ -27,7 +27,11 @@ Rails.application.routes.draw do
     end
     member do
       resources :comments, only: [:create], defaults: {commentable: 'questions'}
+      resources :subscriptions, only: [:create], defaults: {subscriptable: 'questions'} do
+        delete "", to: "subscriptions#destroy", on: :collection
+      end
     end
+
   end
 
   resources :attachments, only: :destroy
