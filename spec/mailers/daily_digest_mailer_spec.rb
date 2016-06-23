@@ -1,3 +1,4 @@
+# tests may fail due to time of running (questions with created_at after 23.00 does't sens to user)
 require "rails_helper"
 
 RSpec.describe DailyDigestMailer, type: :mailer do

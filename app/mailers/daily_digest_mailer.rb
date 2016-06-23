@@ -1,6 +1,7 @@
 class DailyDigestMailer < ApplicationMailer
   def daily_digest(user)
-    @questions = Question.where('created_at >= ?', Time.now.beginning_of_day)
+    time = Time.now.change(hour: 23)
+    @questions = Question.where(created_at:  (time - 1.day)..time)
     mail(to: user.email, subject: 'Daily Digest')
   end
 end
