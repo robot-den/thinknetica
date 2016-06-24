@@ -1,4 +1,10 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   use_doorkeeper
 
   concern :votable do
@@ -21,7 +27,11 @@ Rails.application.routes.draw do
     end
     member do
       resources :comments, only: [:create], defaults: {commentable: 'questions'}
+      resources :subscriptions, only: [:create], defaults: {subscriptable: 'questions'} do
+        delete "", to: "subscriptions#destroy", on: :collection
+      end
     end
+
   end
 
   resources :attachments, only: :destroy

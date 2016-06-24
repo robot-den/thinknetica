@@ -66,5 +66,15 @@ describe Ability do
     context 'comments' do
       it { should be_able_to :create, Comment }
     end
+
+    context 'subscriptions' do
+      let(:subscription) { create :subscription }
+      let(:user_subscription) { create :subscription, user: user }
+
+      it { should be_able_to :create, Subscription }
+      it { should be_able_to :destroy, user_subscription, user: user }
+
+      it { should_not be_able_to :destroy, subscription, user: user }
+    end
   end
 end

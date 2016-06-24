@@ -32,3 +32,6 @@
     .panel-footer.comments
       = link_to 'add comment', '#', class: 'add-comment-link'
       = render @question.comments
+  - if user_signed_in?
+    .panel-footer.subscription
+      = render partial: 'subscriptions/link', locals: { subscriptable: @question }
