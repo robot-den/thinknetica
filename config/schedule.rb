@@ -13,7 +13,7 @@
 #   rake "some:great:rake:task"
 # end
 #
-every :day do
+every :day, at: '1:00 am' do
   runner "DailyDigestJob.perform_now"
 end
 

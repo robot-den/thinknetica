@@ -5,8 +5,8 @@ RSpec.describe DailyDigestMailer, type: :mailer do
   describe '#daily_digest' do
     let(:user) { create(:user) }
     let!(:email) { DailyDigestMailer.daily_digest(user) }
-    let!(:questions) { create_list(:question, 2) }
-    let!(:old_question) { create(:question, title: 'Title of the old question', created_at: Time.now - 2.days) }
+    let!(:questions) { create_list(:question, 2, created_at: Time.zone.now.yesterday) }
+    let!(:old_question) { create(:question, title: 'Title of the old question', created_at: Time.zone.now - 2.days) }
 
     it 'delivered to the user' do
       expect(email.to[0]).to eq user.email
