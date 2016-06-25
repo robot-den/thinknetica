@@ -11,6 +11,13 @@
 /log/*
 !/log/.keep
 /tmp
+
+# Ignore attachments uploads
+/public/uploads/
+
+# Ignore redis artifacts
 *.rdb
 
-/public/uploads/
+# Ignore sphinx files
+/db/sphinx
+/config/*.sphinx.conf
