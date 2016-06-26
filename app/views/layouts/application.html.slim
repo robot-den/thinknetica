@@ -21,9 +21,20 @@ html
             li
               a href="#"  Link
           form.navbar-form.navbar-left role="search"
-            .form-group
-              input.form-control placeholder="Doesn't work :(" type="text" /
-            button.btn.btn-default type="submit"  Submit
+            .input-group
+              .form-group
+                input#search.form-control placeholder="Doesn't work :(" type="text"
+
+              span.input-group
+                select.form-control name="search_by"
+                  option selected="" value="everywhere" everywhere
+                  option value="questions" questions
+                  option value="answers" answers
+                  option value="comments" comments
+                  option value="users" users
+
+              span.input-group-btn
+                button.btn.btn-default type="submit"  Find
           ul.nav.navbar-nav.navbar-right
             li
               - if user_signed_in?
