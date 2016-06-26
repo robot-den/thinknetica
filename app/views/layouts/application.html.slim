@@ -20,21 +20,15 @@ html
                 = link_to 'Ask question', new_question_path
             li
               a href="#"  Link
-          form.navbar-form.navbar-left role="search"
+
+          = form_tag search_path, method: :get, class: 'navbar-form navbar-left', role: 'search' do
             .input-group
               .form-group
-                input#search.form-control placeholder="Doesn't work :(" type="text"
-
+                = text_field_tag :query, '',id: 'search', class: 'form-control'
               span.input-group
-                select.form-control name="search_by"
-                  option selected="" value="everywhere" everywhere
-                  option value="questions" questions
-                  option value="answers" answers
-                  option value="comments" comments
-                  option value="users" users
-
+                = select_tag(:search_by, options_for_select(search_types, 1), class: 'form-control' )
               span.input-group-btn
-                button.btn.btn-default type="submit"  Find
+                = submit_tag 'Find', class: 'btn btn-default'
           ul.nav.navbar-nav.navbar-right
             li
               - if user_signed_in?
