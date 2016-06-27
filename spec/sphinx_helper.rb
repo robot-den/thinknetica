@@ -22,14 +22,4 @@ RSpec.configure do |config|
     # stop Sphinx at the end of the test suite.
     ThinkingSphinx::Test.start_with_autostop
   end
-
-  config.before(:each, sphinx: true) do
-    # For tests tagged with Sphinx, use deletion (or truncation)
-    DatabaseCleaner.strategy = :truncation
-  end
-
-  # config.before(:each, type: :js) do
-  #   # Index data when running an acceptance spec.
-  #   index
-  # end
 end
