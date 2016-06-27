@@ -1,9 +1,9 @@
 class SearchController < ApplicationController
   def search
-    if resource == 'everywhere'
-      @search_results = ThinkingSphinx.search params[:query]
-    elsif resource
-      @search_results = resource.classify.constantize.search params[:query]
+    if resource == 'everywhere' && !params[:query].empty?
+      @search_results = ThinkingSphinx.search ThinkingSphinx::Query.escape(params[:query])
+    elsif resource && !params[:query].empty?
+      @search_results = resource.classify.constantize.search ThinkingSphinx::Query.escape(params[:query])
     else
       redirect_to root_url
     end
