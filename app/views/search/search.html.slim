@@ -1,0 +1,9 @@
+.container-fluid
+  .row
+    .col-lg-8.questions
+      - if @search_results.empty?
+        | Omg! You find nothing!
+      - else
+        - @search_results.each do |record|
+          = render partial: "search/#{record.class.to_s.downcase}", locals: { record: record }
+    .col-lg-4

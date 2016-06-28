@@ -42,6 +42,8 @@ Rails.application.routes.draw do
   post "/omniauth_services/save_email_for_oauth", as: 'save_email_for_oauth'
   get "/omniauth_services/confirm_email", as: 'confirm_email'
 
+  get "/search", to: 'search#search'
+
   namespace :api do
     namespace :v1 do
       resources :profiles, only: [] do
