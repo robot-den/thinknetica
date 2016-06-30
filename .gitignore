@@ -21,3 +21,7 @@
 # Ignore sphinx files
 /db/sphinx
 /config/*.sphinx.conf
+
+# Ignore files with passwords
+config/database.yml
+config/private_pub.yml
