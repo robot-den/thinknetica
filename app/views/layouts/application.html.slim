@@ -18,13 +18,11 @@ html
             li
               - if can?(:create, Question)
                 = link_to 'Ask question', new_question_path
-            li
-              a href="#"  Link
 
           = form_tag search_path, method: :get, class: 'navbar-form navbar-left', role: 'search' do
             .input-group
               .form-group
-                = text_field_tag :query, '',id: 'search', class: 'form-control'
+                = text_field_tag :query, '',id: 'search', class: 'form-control', placeholder: 'Search'
               span.input-group
                 = select_tag(:search_by, options_for_select(search_types, 1), class: 'form-control' )
               span.input-group-btn
@@ -35,20 +33,6 @@ html
                 = link_to 'Log out', destroy_user_session_path, method: :delete
               - else
                 = link_to 'Sign in', new_user_session_path
-            li.dropdown
-              a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
-                | Dropdown
-                span.caret
-              ul.dropdown-menu
-                li
-                  a href="#"  Action
-                li
-                  a href="#"  Another action
-                li
-                  a href="#"  Something else here
-                li.divider role="separator"
-                li
-                  a href="#"  Separated link
         /! /.navbar-collapse
       /! /.container-fluid
     div
