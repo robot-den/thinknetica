@@ -15,6 +15,5 @@
 //= require private_pub
 //= require jquery.remotipart
 //= require bootstrap-sprockets
-//= require turbolinks
 //= require cocoon
 //= require_tree .
