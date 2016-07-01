@@ -17,4 +17,8 @@ every :day, at: '1:00 am' do
   runner "DailyDigestJob.perform_now"
 end
 
+every :hour do
+  rake "ts:index"
+end
+
 # Learn more: http://github.com/javan/whenever
