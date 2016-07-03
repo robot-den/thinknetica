@@ -15,7 +15,7 @@ feature 'User can edit his answer', %q{
     visit question_path(question)
 
     within '.answers' do
-      click_on 'Edit answer'
+      click_on 'edit'
       fill_in 'Answer', with: 'First edit answer'
       click_on 'Save'
 
@@ -23,7 +23,7 @@ feature 'User can edit his answer', %q{
       expect(page).to_not have_content answer.body
       expect(page).to_not have_selector 'textarea'
 
-      click_on 'Edit answer'
+      click_on 'edit'
       fill_in 'Answer', with: 'Second edit answer'
       click_on 'Save'
 
@@ -39,7 +39,7 @@ feature 'User can edit his answer', %q{
     visit question_path(question)
 
     within '.answers' do
-      expect(page).to_not have_link 'Edit answer'
+      expect(page).to_not have_link 'edit'
     end
   end
 
@@ -48,7 +48,7 @@ feature 'User can edit his answer', %q{
     visit question_path(question)
 
     within '.answers' do
-      expect(page).to_not have_link 'Edit answer'
+      expect(page).to_not have_link 'edit'
     end
   end
 end

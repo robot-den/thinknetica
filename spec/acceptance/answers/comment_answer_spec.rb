@@ -13,8 +13,11 @@ feature 'user can comment answer', %q{
     sign_in(user)
     visit question_path(question)
 
-    within "#answer-#{answer.id} .comments" do
-      click_on 'add comment'
+    within "#answer-#{answer.id} .new-answer-comment" do
+      click_on 'comment'
+    end
+
+    within "#answer-#{ answer.id }-comments" do
       fill_in 'Comment', with: 'My comment'
       click_on 'Send'
 

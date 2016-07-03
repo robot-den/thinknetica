@@ -6,5 +6,5 @@
   .index-article-links
     h5
       span.glyphicon.glyphicon-time
-      = ' Just now'
+      => 'Just now'
       .a.btn.btn-info.btn-sm.pull-right href="/questions/#{ @question.id }" Read

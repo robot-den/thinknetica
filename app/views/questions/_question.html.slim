@@ -18,6 +18,7 @@
       - if user_signed_in?
         span.subscription
           = render partial: 'subscriptions/link', locals: { subscriptable: @question }
+      - if can?(:create, Comment)
         span.new-question-comment
           =< link_to 'comment', '#', class: 'add-comment-link'
     .col-lg-4.pull-right

@@ -1,36 +1,41 @@
 .answer id="answer-#{ @answer.id }" data-answer-id="#{ @answer.id }"
-  .panel.panel-default
-    .panel-body
-      .col-lg-10
-        = @answer.body
-        p
-        | Attachments:
-        ul
-          - i = 0
-          - while (i < @attachments.length)
-              div id="file-#{ @attachments[i].id }"
-                li
-                  a href="#{@attachments[i].url}"  #{@attachments[i].name}
-                  - if gon.user_signed_in && gon.current_user_id == @answer.user_id
-                    a data-method="delete" data-remote="true" href="/attachments/#{@attachments[i].id}" rel="nofollow"  remove file
-              - i++
+  .show-answer
+    = @answer.body
+    - if (@attachments.length > 0)
+      p Attachments:
+      ul
+        - i = 0
+        - while (i < @attachments.length)
+            div id="file-#{ @attachments[i].id }"
+              li
+                a href="#{@attachments[i].url}"  #{@attachments[i].name}
+                - if gon.user_signed_in && gon.current_user_id == @answer.user_id
+                  a data-method="delete" data-remote="true" href="/attachments/#{@attachments[i].id}" rel="nofollow"  remove file
+            - i++
 
-      .col-lg-2
+  .show-answer-links id="answer-#{ @answer.id }" data-answer-id="#{ @answer.id }"
+    .row
+      .col-lg-4
+        - if gon.user_signed_in && gon.current_user_id == @answer.user_id
+          a.edit-answer-link data-answer-id="#{@answer.id}" href=""  edit
+          '
+          a data-method="delete" data-remote="true" href="/answers/#{@answer.id}" rel="nofollow"  delete
+          '
         - if gon.user_signed_in && @question_author_id == gon.current_user_id
-          a data-method="patch" data-remote="true" href="/answers/set_as_best/#{@answer.id}" rel="nofollow"  Mark as best
+          a data-method="patch" data-remote="true" href="/answers/set_as_best/#{@answer.id}" rel="nofollow"  mark as best
 
-      .panel-footer.answers-links
+        span.new-answer-comment
+          - if gon.user_signed_in
+            a.add-comment-link href="#" comment
+
+      .col-lg-4.pull-right
         .rating
           - if gon.user_signed_in && @answer.user_id != gon.current_user_id
-            a.vote-cancel-link data-method="post" data-remote="true" href="/answers/#{@answer.id}/vote_cancel" rel="nofollow" style="display:none;"  cancel
             a.vote-up-link data-method="post" data-remote="true" href="/answers/#{@answer.id}/vote_up" rel="nofollow"  up
+            '
+            span.rating-value 0
             a.vote-down-link data-method="post" data-remote="true" href="/answers/#{@answer.id}/vote_down" rel="nofollow"  down
-          .rating-value 0
-
-        - if gon.user_signed_in && gon.current_user_id == @answer.user_id
-          a.edit-answer-link data-answer-id="#{@answer.id}" href=""  Edit answer
-          |   |
-          a data-method="delete" data-remote="true" href="/answers/#{@answer.id}" rel="nofollow"  Delete my answer
-      - if gon.user_signed_in
-        .panel-footer.comments
-          a.add-comment-link href="#"  add comment
+            a.vote-cancel-link data-method="post" data-remote="true" href="/answers/#{@answer.id}/vote_cancel" rel="nofollow" style="display:none;"  cancel
+          - else
+            span.rating-value 0
+  div id="answer-#{ @answer.id }-comments"

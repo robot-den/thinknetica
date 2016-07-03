@@ -15,8 +15,8 @@ feature 'User can delete his answer', %q{
 
     visit question_path(question)
     within '.answers' do
-      click_on 'Delete my answer'
-      
+      click_on 'delete'
+
       expect(page).to_not have_content answer.body
     end
   end
@@ -26,7 +26,7 @@ feature 'User can delete his answer', %q{
     visit question_path(answer.question_id)
 
     within '.answers' do
-      expect(page).to_not have_link 'Delete my answer'
+      expect(page).to_not have_link 'delete'
     end
   end
 
@@ -34,7 +34,7 @@ feature 'User can delete his answer', %q{
     visit question_path(answer.question_id)
 
     within '.answers' do
-      expect(page).to_not have_link 'Delete my answer'
+      expect(page).to_not have_link 'delete'
     end
   end
 end

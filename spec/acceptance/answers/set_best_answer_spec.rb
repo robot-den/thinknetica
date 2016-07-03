@@ -14,10 +14,10 @@ feature 'User can choose the best answer', %q{
     sign_in(user)
     visit question_path(question)
 
-    within "#answer-#{ answer_one.id }" do
-      click_on 'Mark as best'
+    within ".show-answer-links#answer-#{ answer_one.id }" do
+      click_on 'mark as best'
 
-      expect(page).to_not have_link 'Mark as best'
+      expect(page).to_not have_link 'mark as best'
       expect(page).to have_content 'Best answer'
     end
 
@@ -25,10 +25,10 @@ feature 'User can choose the best answer', %q{
       expect(page.first('div')[:id]).to eq "answer-#{answer_one.id}"
     end
 
-    within "#answer-#{ answer_two.id }" do
-      click_on 'Mark as best'
+    within ".show-answer-links#answer-#{ answer_two.id }" do
+      click_on 'mark as best'
 
-      expect(page).to_not have_link 'Mark as best'
+      expect(page).to_not have_link 'mark as best'
       expect(page).to have_content 'Best answer'
     end
 
@@ -36,8 +36,8 @@ feature 'User can choose the best answer', %q{
       expect(page.first('div')[:id]).to eq "answer-#{answer_two.id}"
     end
 
-    within "#answer-#{ answer_one.id }" do
-      expect(page).to have_link 'Mark as best'
+    within ".show-answer-links#answer-#{ answer_one.id }" do
+      expect(page).to have_link 'mark as best'
       expect(page).to_not have_content 'Best answer'
     end
 
@@ -49,8 +49,8 @@ feature 'User can choose the best answer', %q{
     answer = create(:answer, question: question)
     visit question_path(question)
 
-    within "#answer-#{ answer.id }" do
-      expect(page).to_not have_link 'Mark as best'
+    within ".show-answer-links#answer-#{ answer.id }" do
+      expect(page).to_not have_link 'mark as best'
     end
   end
 
@@ -59,8 +59,8 @@ feature 'User can choose the best answer', %q{
     answer = create(:answer, question: question)
     visit question_path(question)
 
-    within "#answer-#{ answer.id }" do
-      expect(page).to_not have_link 'Mark as best'
+    within ".show-answer-links#answer-#{ answer.id }" do
+      expect(page).to_not have_link 'mark as best'
     end
   end
 end

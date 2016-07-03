@@ -7,10 +7,16 @@ $ ->
     e.preventDefault();
     answer_id = $(this).data('answerId')
     $(this).hide();
-    $("#answer-#{answer_id} .answers-links").append(JST["templates/edit_answer_form"]({answer_id: answer_id}))
+    $(".show-answer-links#answer-#{answer_id} ").append(JST["templates/edit_answer_form"]({answer_id: answer_id}))
+
+  #hide form for edit answer
+  $('.answers').on 'click', '.cancel-edit-answer-btn', (e) ->
+    e.preventDefault();
+    $(this).closest('.show-answer-links').find('.edit-answer-link').show();
+    $(this).closest('form.edit_answer').remove();
 
   #toggle links for votes
-  $('.answers .rating a').bind 'ajax:success', (e, data, status, xhr) ->
+  $('.answers').bind 'ajax:success', (e, data, status, xhr) ->
     response = $.parseJSON(xhr.responseText)
     $('#answer-' + response.id + ' .rating-value').html(response.rating)
     if response.voted == true

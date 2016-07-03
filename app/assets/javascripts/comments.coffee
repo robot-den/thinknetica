@@ -15,12 +15,18 @@ $ ->
     $(this).closest('.new-comment-form').remove();
     $('.new-question-comment .add-comment-link').show();
 
+  #hide form for new answer comment
+  $('.answers').on 'click', '.cancel-comment-btn', (e) ->
+    e.preventDefault();
+    $(this).closest('.answer').find('.add-comment-link').show();
+    $(this).closest('.new-comment-form').remove();
+
   #show form for new answer comment
   $('.answers').on 'click', '.add-comment-link', (e) ->
     e.preventDefault();
-    answer_id = $(this).closest('.answer').data('answerId')
+    answer_id = $(this).closest('.show-answer-links').data('answerId')
     $(this).hide();
-    $(this).closest('.comments').append(JST["templates/new_comment_form"]({commentable_type: 'answers', commentable_id: answer_id}));
+    $("#answer-#{ answer_id }-comments").prepend(JST["templates/new_comment_form"]({commentable_type: 'answers', commentable_id: answer_id}));
 
   #render new comments via comet
   question_id = $('.question').data('questionId')
@@ -29,7 +35,8 @@ $ ->
     commentable_type = data['commentable_type']
     commentable_id = data['commentable_id']
     comment_form = "<p>#{comment.body}</p>"
+    $('.new-comment-form').remove();
     if commentable_type == 'Question'
       $('.question .question-comments').append(comment_form)
     else if commentable_type == 'Answer'
-      $("#answer-#{commentable_id} .comments").append(comment_form)
+      $("#answer-#{commentable_id}-comments").append(comment_form)

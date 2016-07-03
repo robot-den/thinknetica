@@ -1,26 +1,27 @@
-div class="answer" id="answer-#{ answer.id }" data={answer_id: "#{answer.id}"}
-  .panel.panel-default
-    .panel-body
-      .col-lg-10
-        = answer.body
-        p
-        | Attachments:
-        ul
-          = render partial: 'attachments/attachment', collection: answer.attachments
-      .col-lg-2
-        - # FIXME N+1 query
+.answer id="answer-#{ answer.id }" data={answer_id: "#{answer.id}"}
+  .show-answer
+    = answer.body
+    - unless answer.attachments.empty?
+      p Attachments:
+      ul
+        = render partial: 'attachments/attachment', collection: answer.attachments
+  .show-answer-links id="answer-#{ answer.id }" data={answer_id: "#{answer.id}"}
+    .row
+      .col-lg-4
+        - if can?(:update, answer)
+          => link_to 'edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+          => link_to 'delete', answer_path(answer), method: :delete, remote: true
+
         - if can?(:set_as_best, answer) && !answer.best?
-            = link_to 'Mark as best', set_best_answer_path(answer), method: :patch, remote: true
+            = link_to 'mark as best', set_best_answer_path(answer), method: :patch, remote: true
         - elsif answer.best?
             | Best answer
 
-      .panel-footer.answers-links
+        - if can?(:create, Comment)
+          span.new-answer-comment
+            =< link_to 'comment', '#', class: 'add-comment-link'
+
+      .col-lg-4.pull-right
         = render partial: 'votes/vote', locals: { votable: answer }
-        - if can?(:update, answer)
-          = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-          |   |
-          = link_to 'Delete my answer', answer_path(answer), method: :delete, remote: true
-      - if can?(:create, Comment)
-        .panel-footer.comments
-          = link_to 'add comment', '#', class: 'add-comment-link'
-          = render answer.comments
+  div id="answer-#{ answer.id }-comments"
+    = render answer.comments
