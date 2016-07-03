@@ -1,25 +1,29 @@
-
-.panel.panel-success
-  .panel-heading
-    .row
-      .col-lg-8
-        h3.panel-title
-          = @question.title
-      .col-lg-4
-        = render partial: 'votes/vote', locals: { votable: @question }
-  .panel-body
+.show-question
+  h2
+    = @question.title
+  .article-body
     = @question.body
-    p
-    | Attachments:
-    ul
-    = render partial: 'attachments/attachment', collection: @question.attachments
+    - unless @question.attachments.empty?
+      hr
+      p Attachments:
+      ul
+        = render partial: 'attachments/attachment', collection: @question.attachments
+.show-question-links
+  .row
+    .col-lg-4
+      - if can?(:update, @question)
+        => link_to 'edit', '#', class: 'edit-question-link'
+        = link_to 'delete', question_path(@question), method: :delete
 
+      - if user_signed_in?
+        span.subscription
+          = render partial: 'subscriptions/link', locals: { subscriptable: @question }
+        span.new-question-comment
+          =< link_to 'comment', '#', class: 'add-comment-link'
+    .col-lg-4.pull-right
+      = render partial: 'votes/vote', locals: { votable: @question }
   - if can?(:update, @question)
-    .panel-footer
-      = link_to 'Edit question', '', class: 'edit-question-link'
-      |   |
-      = link_to 'Delete Question', question_path(@question), method: :delete
-
+    .edit-question
       = form_for @question, remote: true do |f|
         .form-group
           = f.label :title, 'Edit title'
@@ -28,10 +32,5 @@
           = f.label :body, 'Edit body'
           = f.text_area :body, class: 'form-control'
         = f.submit 'Save', class: 'btn btn-default'
-  - if can?(:create, Comment)
-    .panel-footer.comments
-      = link_to 'add comment', '#', class: 'add-comment-link'
-      = render @question.comments
-  - if user_signed_in?
-    .panel-footer.subscription
-      = render partial: 'subscriptions/link', locals: { subscriptable: @question }
+.question-comments
+  = render @question.comments

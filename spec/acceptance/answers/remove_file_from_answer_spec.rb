@@ -18,7 +18,7 @@ feature 'User can remove files of answer', %q{
       click_on 'remove file'
 
       expect(page).to_not have_link 'rails_helper.rb', href: "/uploads/attachment/file/1/rails_helper.rb"
-      expect(page).to_not have_link 'remove file'
+      expect(page).to_not have_link('remove file')
     end
   end
 
@@ -28,7 +28,7 @@ feature 'User can remove files of answer', %q{
     visit question_path(question)
 
     within '.answers' do
-      expect(page).to_not have_link 'remove file'
+      expect(page).to_not have_selector(:css, "a#remove_file")
     end
   end
 
@@ -37,7 +37,7 @@ feature 'User can remove files of answer', %q{
     visit question_path(question)
 
     within '.answers' do
-      expect(page).to_not have_link 'remove file'
+      expect(page).to_not have_selector(:css, "a#remove_file")
     end
   end
 end

@@ -1,3 +1,4 @@
+'
 - if can?(:destroy, subscriptable.subscriptions.find_by(user: current_user))
   = link_to 'unsubscribe', subscriptions_path(subscriptable), method: :delete, remote: true
 - else

@@ -2,4 +2,4 @@ div id="file-#{ attachment.id }"
   li
     = link_to attachment.file.identifier, attachment.file.url
     - if can?(:destroy, attachment)
-      = link_to 'remove file', attachment_path(attachment), method: :delete, remote: true
+      =< link_to 'remove file', attachment_path(attachment), method: :delete, remote: true

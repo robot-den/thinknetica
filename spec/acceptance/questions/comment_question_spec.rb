@@ -12,8 +12,10 @@ feature 'user can comment question', %q{
     sign_in(user)
     visit question_path(question)
 
-    within '.question .comments' do
-      click_on 'add comment'
+    within '.question .new-question-comment' do
+      click_on 'comment'
+    end
+    within '.question-comments' do
       fill_in 'Comment', with: 'My comment'
       click_on 'Send'
 
@@ -24,6 +26,6 @@ feature 'user can comment question', %q{
   scenario 'non-authenticated user try comment', js: true do
     visit question_path(question)
 
-    expect(page).to_not have_link 'add comment'
+    expect(page).to_not have_link 'comment'
   end
 end

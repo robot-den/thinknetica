@@ -9,5 +9,26 @@
   border-radius: 10px;
   margin-bottom: 20px;
   color: inherit;
-  background-color: #eeeeee;
+  background-color: #ccebff;
+}
+.show-question {
+  padding: 1px 20px 20px 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  color: inherit;
+  background-color: #ccebff;
+}
+.show-question-links {
+  padding: 5px 10px 5px 10px;
+  border-radius: 1px;
+  margin-bottom: 20px;
+  margin-top: -15px;
+  color: inherit;
+  background-color: #ccebff;
+}
+.glyphicon.size_15 {
+    font-size: 15px;
+}
+.rating {
+  text-align: right;
 }

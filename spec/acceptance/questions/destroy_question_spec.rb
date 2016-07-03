@@ -16,7 +16,7 @@ feature 'User can delete his question', %q{
     fill_in 'Body', with: 'I want to ask you about rails'
     click_on 'Create Question'
 
-    click_on 'Delete Question'
+    click_on 'delete'
 
     expect(page).to have_content 'Question was successfully destroyed'
   end

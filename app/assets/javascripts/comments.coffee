@@ -3,11 +3,17 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
   #show form for new question comment
-  $('.question .comments').on 'click', '.add-comment-link', (e) ->
+  $('.question .new-question-comment').on 'click', '.add-comment-link', (e) ->
     e.preventDefault();
     question_id = $('.question').data('questionId')
     $(this).hide();
-    $(this).closest('.comments').append(JST["templates/new_comment_form"]({commentable_type: 'questions', commentable_id: question_id}));
+    $('.question-comments').prepend(JST["templates/new_comment_form"]({commentable_type: 'questions', commentable_id: question_id}));
+
+  #hide form for new question comment
+  $('.question .question-comments').on 'click', '.cancel-comment-btn', (e) ->
+    e.preventDefault();
+    $(this).closest('.new-comment-form').remove();
+    $('.new-question-comment .add-comment-link').show();
 
   #show form for new answer comment
   $('.answers').on 'click', '.add-comment-link', (e) ->
@@ -24,6 +30,6 @@ $ ->
     commentable_id = data['commentable_id']
     comment_form = "<p>#{comment.body}</p>"
     if commentable_type == 'Question'
-      $('.question .comments').append(comment_form)
+      $('.question .question-comments').append(comment_form)
     else if commentable_type == 'Answer'
       $("#answer-#{commentable_id} .comments").append(comment_form)

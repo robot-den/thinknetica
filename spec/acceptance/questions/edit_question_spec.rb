@@ -14,7 +14,7 @@ feature 'User can edit his question', %q{
     visit question_path(question)
 
     within '.question' do
-      click_on 'Edit question'
+      click_on 'edit'
       fill_in 'Edit title', with: 'First edit title'
       fill_in 'Edit body', with: 'First edit body'
       click_on 'Save'
@@ -25,7 +25,7 @@ feature 'User can edit his question', %q{
       expect(page).to have_content 'First edit body'
       expect(page).to_not have_selector 'textarea'
 
-      click_on 'Edit question'
+      click_on 'edit'
       fill_in 'Edit title', with: 'Second edit title'
       fill_in 'Edit body', with: 'Second edit body'
       click_on 'Save'

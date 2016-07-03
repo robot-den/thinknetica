@@ -5,8 +5,7 @@ $ ->
   #edit question on show page
   $('.question').on 'click', '.edit-question-link', (e) ->
     e.preventDefault();
-    $(this).hide();
-    $('.edit_question').show();
+    $('.edit_question').toggle();
 
   #toggle vote links
   $('.question .rating a').bind 'ajax:success', (e, data, status, xhr) ->
