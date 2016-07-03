@@ -1,9 +1,10 @@
-.panel.panel-success
-  .panel-heading
-    .h3.panel-title
-      = @question.title
-  .panel-body
-    .col-lg-11
-      = @question.body
-    .col-lg-1
-      .a href="/questions/#{ @question.id }" Read
+.index-question
+  h2
+    = @question.title
+  .article-body
+    = truncate(@question.body, 250)
+  .index-article-links
+    h5
+      span.glyphicon.glyphicon-time
+      = ' Just now'
+      .a.btn.btn-info.btn-sm.pull-right href="/questions/#{ @question.id }" Read
