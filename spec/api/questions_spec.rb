@@ -9,7 +9,6 @@ describe 'Questions API' do
 
     context 'authorized' do
       let!(:questions) { create_list(:question, 3) }
-      let!(:answer) { create(:answer, question: questions.first)}
 
       before { get '/api/v1/questions', format: :json, access_token: access_token.token }
 
