@@ -1,27 +1,28 @@
-.answer id="answer-#{ answer.id }" data={answer_id: "#{answer.id}"}
-  .show-answer
-    = answer.body
-    - unless answer.attachments.empty?
-      p Attachments:
-      ul
-        = render partial: 'attachments/attachment', collection: answer.attachments
-  .show-answer-links id="answer-#{ answer.id }" data={answer_id: "#{answer.id}"}
-    .row
-      .col-lg-4
-        - if can?(:update, answer)
-          => link_to 'edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-          => link_to 'delete', answer_path(answer), method: :delete, remote: true
+- cache answer do
+  .answer id="answer-#{ answer.id }" data={answer_id: "#{answer.id}"}
+    .show-answer
+      = answer.body
+      - unless answer.attachments.empty?
+        p Attachments:
+        ul
+          = render partial: 'attachments/attachment', collection: answer.attachments
+    .show-answer-links id="answer-#{ answer.id }" data={answer_id: "#{answer.id}"}
+      .row
+        .col-lg-4
+          - if can?(:update, answer)
+            => link_to 'edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+            => link_to 'delete', answer_path(answer), method: :delete, remote: true
 
-        - if can?(:set_as_best, answer) && !answer.best?
-            = link_to 'mark as best', set_best_answer_path(answer), method: :patch, remote: true
-        - elsif answer.best?
-            | Best answer
+          - if can?(:set_as_best, answer) && !answer.best?
+              = link_to 'mark as best', set_best_answer_path(answer), method: :patch, remote: true
+          - elsif answer.best?
+              | Best answer
 
-        - if can?(:create, Comment)
-          span.new-answer-comment
-            =< link_to 'comment', '#', class: 'add-comment-link'
+          - if can?(:create, Comment)
+            span.new-answer-comment
+              =< link_to 'comment', '#', class: 'add-comment-link'
 
-      .col-lg-4.pull-right
-        = render partial: 'votes/vote', locals: { votable: answer }
-  div id="answer-#{ answer.id }-comments"
-    = render answer.comments
+        .col-lg-4.pull-right
+          = render partial: 'votes/vote', locals: { votable: answer }
+    div id="answer-#{ answer.id }-comments"
+      = render answer.comments
