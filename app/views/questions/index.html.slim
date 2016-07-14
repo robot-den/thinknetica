@@ -1,17 +1,18 @@
-.container-fluid
-  .row
-    .col-lg-8.questions
-      - @questions.each do |question|
-        .index-question
-          h2
-            = question.title
-          .article-body
-            = question.body.truncate(250)
-          .index-article-links
-            h5
-              span.glyphicon.glyphicon-time
-              = question.created_at.strftime(" Posted on %d %B %Y at %H:%M")
-              = link_to 'Read', question_path(question), class: 'btn btn-info btn-sm pull-right'
-    .col-lg-4
+- cache cache_collection_key_for :question do
+  .container-fluid
+    .row
+      .col-lg-8.questions
+        - @questions.each do |question|
+          .index-question
+            h2
+              = question.title
+            .article-body
+              = question.body.truncate(250)
+            .index-article-links
+              h5
+                span.glyphicon.glyphicon-time
+                = question.created_at.strftime(" Posted on %d %B %Y at %H:%M")
+                = link_to 'Read', question_path(question), class: 'btn btn-info btn-sm pull-right'
+      .col-lg-4
 
 = subscribe_to "/questions"
